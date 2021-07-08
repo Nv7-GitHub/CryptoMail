@@ -1,7 +1,7 @@
 {
-  "name": "gdo",
+  "name": "cryptomail",
   "version": "1.0.0",
-  "description": "The web client for GDO!",
+  "description": "E-mail, but with end-to-end encryption!",
   "private": "true",
   "scripts": {
     "build": "webpack --mode production",
