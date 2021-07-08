@@ -3,47 +3,39 @@
 
 import * as jspb from "google-protobuf";
 
-export class AddRequest extends jspb.Message {
-  getA(): number;
-  setA(value: number): void;
-
-  getB(): number;
-  setB(value: number): void;
-
+export class Null extends jspb.Message {
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): AddRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: AddRequest): AddRequest.AsObject;
+  toObject(includeInstance?: boolean): Null.AsObject;
+  static toObject(includeInstance: boolean, msg: Null): Null.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: AddRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): AddRequest;
-  static deserializeBinaryFromReader(message: AddRequest, reader: jspb.BinaryReader): AddRequest;
+  static serializeBinaryToWriter(message: Null, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Null;
+  static deserializeBinaryFromReader(message: Null, reader: jspb.BinaryReader): Null;
 }
 
-export namespace AddRequest {
+export namespace Null {
   export type AsObject = {
-    a: number,
-    b: number,
   }
 }
 
-export class AddResponse extends jspb.Message {
-  getC(): number;
-  setC(value: number): void;
+export class Bool extends jspb.Message {
+  getValue(): boolean;
+  setValue(value: boolean): void;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): AddResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: AddResponse): AddResponse.AsObject;
+  toObject(includeInstance?: boolean): Bool.AsObject;
+  static toObject(includeInstance: boolean, msg: Bool): Bool.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: AddResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): AddResponse;
-  static deserializeBinaryFromReader(message: AddResponse, reader: jspb.BinaryReader): AddResponse;
+  static serializeBinaryToWriter(message: Bool, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Bool;
+  static deserializeBinaryFromReader(message: Bool, reader: jspb.BinaryReader): Bool;
 }
 
-export namespace AddResponse {
+export namespace Bool {
   export type AsObject = {
-    c: number,
+    value: boolean,
   }
 }
 

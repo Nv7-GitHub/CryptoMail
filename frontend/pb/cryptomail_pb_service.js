@@ -10,13 +10,13 @@ var CryptoMail = (function () {
   return CryptoMail;
 }());
 
-CryptoMail.Add = {
-  methodName: "Add",
+CryptoMail.IsLoggedIn = {
+  methodName: "IsLoggedIn",
   service: CryptoMail,
   requestStream: false,
   responseStream: false,
-  requestType: cryptomail_pb.AddRequest,
-  responseType: cryptomail_pb.AddResponse
+  requestType: cryptomail_pb.Null,
+  responseType: cryptomail_pb.Bool
 };
 
 exports.CryptoMail = CryptoMail;
@@ -26,11 +26,11 @@ function CryptoMailClient(serviceHost, options) {
   this.options = options || {};
 }
 
-CryptoMailClient.prototype.add = function add(requestMessage, metadata, callback) {
+CryptoMailClient.prototype.isLoggedIn = function isLoggedIn(requestMessage, metadata, callback) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
-  var client = grpc.unary(CryptoMail.Add, {
+  var client = grpc.unary(CryptoMail.IsLoggedIn, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

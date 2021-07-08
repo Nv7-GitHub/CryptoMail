@@ -20,9 +20,9 @@ type server struct {
 	pb.UnimplementedCryptoMailServer
 }
 
-func (s *server) Add(ctx context.Context, req *pb.AddRequest) (*pb.AddResponse, error) {
-	return &pb.AddResponse{
-		C: req.A + req.B,
+func (s *server) IsLoggedIn(ctx context.Context, req *pb.Null) (*pb.Bool, error) {
+	return &pb.Bool{
+		Value: gmail.HasToken(),
 	}, nil
 }
 

@@ -18,7 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CryptoMailClient interface {
-	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error)
+	IsLoggedIn(ctx context.Context, in *Null, opts ...grpc.CallOption) (*Bool, error)
 }
 
 type cryptoMailClient struct {
@@ -29,9 +29,9 @@ func NewCryptoMailClient(cc grpc.ClientConnInterface) CryptoMailClient {
 	return &cryptoMailClient{cc}
 }
 
-func (c *cryptoMailClient) Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error) {
-	out := new(AddResponse)
-	err := c.cc.Invoke(ctx, "/cryptomail.CryptoMail/Add", in, out, opts...)
+func (c *cryptoMailClient) IsLoggedIn(ctx context.Context, in *Null, opts ...grpc.CallOption) (*Bool, error) {
+	out := new(Bool)
+	err := c.cc.Invoke(ctx, "/cryptomail.CryptoMail/IsLoggedIn", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (c *cryptoMailClient) Add(ctx context.Context, in *AddRequest, opts ...grpc
 // All implementations must embed UnimplementedCryptoMailServer
 // for forward compatibility
 type CryptoMailServer interface {
-	Add(context.Context, *AddRequest) (*AddResponse, error)
+	IsLoggedIn(context.Context, *Null) (*Bool, error)
 	mustEmbedUnimplementedCryptoMailServer()
 }
 
@@ -50,8 +50,8 @@ type CryptoMailServer interface {
 type UnimplementedCryptoMailServer struct {
 }
 
-func (UnimplementedCryptoMailServer) Add(context.Context, *AddRequest) (*AddResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
+func (UnimplementedCryptoMailServer) IsLoggedIn(context.Context, *Null) (*Bool, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IsLoggedIn not implemented")
 }
 func (UnimplementedCryptoMailServer) mustEmbedUnimplementedCryptoMailServer() {}
 
@@ -66,20 +66,20 @@ func RegisterCryptoMailServer(s grpc.ServiceRegistrar, srv CryptoMailServer) {
 	s.RegisterService(&CryptoMail_ServiceDesc, srv)
 }
 
-func _CryptoMail_Add_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddRequest)
+func _CryptoMail_IsLoggedIn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Null)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CryptoMailServer).Add(ctx, in)
+		return srv.(CryptoMailServer).IsLoggedIn(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/cryptomail.CryptoMail/Add",
+		FullMethod: "/cryptomail.CryptoMail/IsLoggedIn",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CryptoMailServer).Add(ctx, req.(*AddRequest))
+		return srv.(CryptoMailServer).IsLoggedIn(ctx, req.(*Null))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -92,8 +92,8 @@ var CryptoMail_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*CryptoMailServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Add",
-			Handler:    _CryptoMail_Add_Handler,
+			MethodName: "IsLoggedIn",
+			Handler:    _CryptoMail_IsLoggedIn_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

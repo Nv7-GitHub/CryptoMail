@@ -20,17 +20,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type AddRequest struct {
+type Null struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
-
-	A int32 `protobuf:"varint,1,opt,name=a,proto3" json:"a,omitempty"`
-	B int32 `protobuf:"varint,2,opt,name=b,proto3" json:"b,omitempty"`
 }
 
-func (x *AddRequest) Reset() {
-	*x = AddRequest{}
+func (x *Null) Reset() {
+	*x = Null{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_grpc_cryptomail_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -38,13 +35,13 @@ func (x *AddRequest) Reset() {
 	}
 }
 
-func (x *AddRequest) String() string {
+func (x *Null) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AddRequest) ProtoMessage() {}
+func (*Null) ProtoMessage() {}
 
-func (x *AddRequest) ProtoReflect() protoreflect.Message {
+func (x *Null) ProtoReflect() protoreflect.Message {
 	mi := &file_grpc_cryptomail_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -56,35 +53,21 @@ func (x *AddRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AddRequest.ProtoReflect.Descriptor instead.
-func (*AddRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use Null.ProtoReflect.Descriptor instead.
+func (*Null) Descriptor() ([]byte, []int) {
 	return file_grpc_cryptomail_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AddRequest) GetA() int32 {
-	if x != nil {
-		return x.A
-	}
-	return 0
-}
-
-func (x *AddRequest) GetB() int32 {
-	if x != nil {
-		return x.B
-	}
-	return 0
-}
-
-type AddResponse struct {
+type Bool struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	C int32 `protobuf:"varint,3,opt,name=c,proto3" json:"c,omitempty"`
+	Value bool `protobuf:"varint,1,opt,name=value,proto3" json:"value,omitempty"`
 }
 
-func (x *AddResponse) Reset() {
-	*x = AddResponse{}
+func (x *Bool) Reset() {
+	*x = Bool{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_grpc_cryptomail_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -92,13 +75,13 @@ func (x *AddResponse) Reset() {
 	}
 }
 
-func (x *AddResponse) String() string {
+func (x *Bool) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AddResponse) ProtoMessage() {}
+func (*Bool) ProtoMessage() {}
 
-func (x *AddResponse) ProtoReflect() protoreflect.Message {
+func (x *Bool) ProtoReflect() protoreflect.Message {
 	mi := &file_grpc_cryptomail_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -110,16 +93,16 @@ func (x *AddResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AddResponse.ProtoReflect.Descriptor instead.
-func (*AddResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use Bool.ProtoReflect.Descriptor instead.
+func (*Bool) Descriptor() ([]byte, []int) {
 	return file_grpc_cryptomail_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AddResponse) GetC() int32 {
+func (x *Bool) GetValue() bool {
 	if x != nil {
-		return x.C
+		return x.Value
 	}
-	return 0
+	return false
 }
 
 var File_grpc_cryptomail_proto protoreflect.FileDescriptor
@@ -127,17 +110,15 @@ var File_grpc_cryptomail_proto protoreflect.FileDescriptor
 var file_grpc_cryptomail_proto_rawDesc = []byte{
 	0x0a, 0x15, 0x67, 0x72, 0x70, 0x63, 0x2f, 0x63, 0x72, 0x79, 0x70, 0x74, 0x6f, 0x6d, 0x61, 0x69,
 	0x6c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0a, 0x63, 0x72, 0x79, 0x70, 0x74, 0x6f, 0x6d,
-	0x61, 0x69, 0x6c, 0x22, 0x28, 0x0a, 0x0a, 0x41, 0x64, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x12, 0x0c, 0x0a, 0x01, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x01, 0x61, 0x12,
-	0x0c, 0x0a, 0x01, 0x62, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x01, 0x62, 0x22, 0x1b, 0x0a,
-	0x0b, 0x41, 0x64, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0c, 0x0a, 0x01,
-	0x63, 0x18, 0x03, 0x20, 0x01, 0x28, 0x05, 0x52, 0x01, 0x63, 0x32, 0x46, 0x0a, 0x0a, 0x43, 0x72,
-	0x79, 0x70, 0x74, 0x6f, 0x4d, 0x61, 0x69, 0x6c, 0x12, 0x38, 0x0a, 0x03, 0x41, 0x64, 0x64, 0x12,
-	0x16, 0x2e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x6f, 0x6d, 0x61, 0x69, 0x6c, 0x2e, 0x41, 0x64, 0x64,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x17, 0x2e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x6f,
-	0x6d, 0x61, 0x69, 0x6c, 0x2e, 0x41, 0x64, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x22, 0x00, 0x42, 0x0c, 0x5a, 0x0a, 0x62, 0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x70, 0x62,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x61, 0x69, 0x6c, 0x22, 0x06, 0x0a, 0x04, 0x4e, 0x75, 0x6c, 0x6c, 0x22, 0x1c, 0x0a, 0x04, 0x42,
+	0x6f, 0x6f, 0x6c, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x08, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x32, 0x40, 0x0a, 0x0a, 0x43, 0x72, 0x79,
+	0x70, 0x74, 0x6f, 0x4d, 0x61, 0x69, 0x6c, 0x12, 0x32, 0x0a, 0x0a, 0x49, 0x73, 0x4c, 0x6f, 0x67,
+	0x67, 0x65, 0x64, 0x49, 0x6e, 0x12, 0x10, 0x2e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x6f, 0x6d, 0x61,
+	0x69, 0x6c, 0x2e, 0x4e, 0x75, 0x6c, 0x6c, 0x1a, 0x10, 0x2e, 0x63, 0x72, 0x79, 0x70, 0x74, 0x6f,
+	0x6d, 0x61, 0x69, 0x6c, 0x2e, 0x42, 0x6f, 0x6f, 0x6c, 0x22, 0x00, 0x42, 0x0c, 0x5a, 0x0a, 0x62,
+	0x61, 0x63, 0x6b, 0x65, 0x6e, 0x64, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
@@ -154,12 +135,12 @@ func file_grpc_cryptomail_proto_rawDescGZIP() []byte {
 
 var file_grpc_cryptomail_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_grpc_cryptomail_proto_goTypes = []interface{}{
-	(*AddRequest)(nil),  // 0: cryptomail.AddRequest
-	(*AddResponse)(nil), // 1: cryptomail.AddResponse
+	(*Null)(nil), // 0: cryptomail.Null
+	(*Bool)(nil), // 1: cryptomail.Bool
 }
 var file_grpc_cryptomail_proto_depIdxs = []int32{
-	0, // 0: cryptomail.CryptoMail.Add:input_type -> cryptomail.AddRequest
-	1, // 1: cryptomail.CryptoMail.Add:output_type -> cryptomail.AddResponse
+	0, // 0: cryptomail.CryptoMail.IsLoggedIn:input_type -> cryptomail.Null
+	1, // 1: cryptomail.CryptoMail.IsLoggedIn:output_type -> cryptomail.Bool
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -174,7 +155,7 @@ func file_grpc_cryptomail_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_grpc_cryptomail_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AddRequest); i {
+			switch v := v.(*Null); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -186,7 +167,7 @@ func file_grpc_cryptomail_proto_init() {
 			}
 		}
 		file_grpc_cryptomail_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AddResponse); i {
+			switch v := v.(*Bool); i {
 			case 0:
 				return &v.state
 			case 1:

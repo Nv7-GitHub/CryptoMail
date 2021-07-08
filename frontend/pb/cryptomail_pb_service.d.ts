@@ -4,18 +4,18 @@
 import * as cryptomail_pb from "./cryptomail_pb";
 import {grpc} from "@improbable-eng/grpc-web";
 
-type CryptoMailAdd = {
+type CryptoMailIsLoggedIn = {
   readonly methodName: string;
   readonly service: typeof CryptoMail;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof cryptomail_pb.AddRequest;
-  readonly responseType: typeof cryptomail_pb.AddResponse;
+  readonly requestType: typeof cryptomail_pb.Null;
+  readonly responseType: typeof cryptomail_pb.Bool;
 };
 
 export class CryptoMail {
   static readonly serviceName: string;
-  static readonly Add: CryptoMailAdd;
+  static readonly IsLoggedIn: CryptoMailIsLoggedIn;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -50,14 +50,14 @@ export class CryptoMailClient {
   readonly serviceHost: string;
 
   constructor(serviceHost: string, options?: grpc.RpcOptions);
-  add(
-    requestMessage: cryptomail_pb.AddRequest,
+  isLoggedIn(
+    requestMessage: cryptomail_pb.Null,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.AddResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Bool|null) => void
   ): UnaryResponse;
-  add(
-    requestMessage: cryptomail_pb.AddRequest,
-    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.AddResponse|null) => void
+  isLoggedIn(
+    requestMessage: cryptomail_pb.Null,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Bool|null) => void
   ): UnaryResponse;
 }
 

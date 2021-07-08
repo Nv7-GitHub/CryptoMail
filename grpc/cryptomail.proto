@@ -4,14 +4,11 @@ option go_package = "backend/pb";
 package cryptomail;
 
 service CryptoMail {
-  rpc Add(AddRequest) returns (AddResponse) {}
+  rpc IsLoggedIn(Null) returns (Bool) {}
 }
 
-message AddRequest {
-  int32 a = 1;
-  int32 b = 2;
-}
+message Null {}
 
-message AddResponse {
-  int32 c = 3;
+message Bool {
+  bool value = 1;
 }
