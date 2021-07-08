@@ -3,4 +3,4 @@ install:
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1
 
 proto:
-	protoc --go_out=backend/pb --go_opt=paths=source_relative --go-grpc_out=backend/pb --go-grpc_opt=paths=source_relative grpc/cryptomail.proto
+	protoc --go_out=. --go-grpc_out=. grpc/cryptomail.proto
