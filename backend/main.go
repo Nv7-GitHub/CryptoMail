@@ -35,7 +35,13 @@ func main() {
 
 	wrapped := grpcweb.WrapServer(s)
 	httpS := &http.Server{
-		Handler: wrapped,
+		Handler: http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
+			// CORS
+			resp.Header().Set("Access-Control-Allow-Origin", "*")
+			resp.Header().Set("Access-Control-Allow-Methods", "*")
+			resp.Header().Set("Access-Control-Allow-Headers", "*")
+			wrapped.ServeHTTP(resp, req)
+		}),
 	}
 	defer httpS.Close()
 

@@ -9,14 +9,18 @@ import { CryptoMailClient, ServiceError } from '../pb/cryptomail_pb_service';
 import { AddRequest, AddResponse } from '../pb/cryptomail_pb';
 /* gRPC */
 
+import { handleError } from './util';
+
 /* Testing Code */
-let client = new CryptoMailClient("http://localhost:8080/");
+let client = new CryptoMailClient("http://localhost:8080");
 let msg = new AddRequest();
 msg.setA(1);
 msg.setB(2);
 client.add(msg, (err: ServiceError, resp: AddResponse) => {
-  console.log(err);
-  console.log(resp);
+  if (err != null) {
+    handleError(err);
+  }
+  console.log(resp.getC());
 })
 /* Testing Code */
 
