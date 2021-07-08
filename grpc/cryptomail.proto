@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "github.com/Nv7-Github/CryptoMail/backend/pb";
+package cryptomail;
+
+service CryptoMail {
+  rpc Add(AddRequest) returns (AddResponse) {}
+}
+
+message AddRequest {
+  int32 a = 1;
+  int32 b = 2;
+}
+
+message AddResponse {
+  int32 c = 3;
+}
