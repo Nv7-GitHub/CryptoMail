@@ -1,5 +1,5 @@
 // package: cryptomail
-// file: grpc/cryptomail.proto
+// file: cryptomail.proto
 
 import * as jspb from "google-protobuf";
 

@@ -11,4 +11,6 @@ proto:
 	protoc --go_out=. --go-grpc_out=. grpc/cryptomail.proto
 
 	# Typescript Generation
-	protoc --plugin="protoc-gen-ts=frontend/node_modules/.bin/protoc-gen-ts" --ts_out="frontend/pb" grpc/cryptomail.proto
+	cp grpc/cryptomail.proto cryptomail.proto
+	protoc --plugin="protoc-gen-ts=frontend/node_modules/.bin/protoc-gen-ts" --ts_out="service=grpc-web:frontend/pb" cryptomail.proto
+	rm cryptomail.proto

@@ -2,11 +2,14 @@ package main
 
 import (
 	"context"
-	"log"
+	"fmt"
 	"net"
+	"net/http"
 
 	"github.com/Nv7-Github/CryptoMail/backend/pb"
 	"google.golang.org/grpc"
+
+	"github.com/improbable-eng/grpc-web/go/grpcweb"
 )
 
 const port = ":8080"
@@ -24,14 +27,21 @@ func (s *server) Add(ctx context.Context, req *pb.AddRequest) (*pb.AddResponse, 
 func main() {
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		panic(err)
 	}
-	s := grpc.NewServer()
 
+	s := grpc.NewServer()
 	pb.RegisterCryptoMailServer(s, &server{})
 
-	log.Printf("server listening at %v", lis.Addr())
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+	wrapped := grpcweb.WrapServer(s)
+	httpS := &http.Server{
+		Handler: wrapped,
+	}
+	defer httpS.Close()
+
+	fmt.Println("Listening at", port)
+	err = httpS.Serve(lis)
+	if err != nil {
+		panic(err)
 	}
 }

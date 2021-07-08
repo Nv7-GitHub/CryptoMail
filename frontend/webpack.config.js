@@ -12,6 +12,7 @@ module.exports = (env, argv) => {
       publicPath: "/",
       contentBase: "./dist",
       hot: true,
+      port: 3000,
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.js'],
