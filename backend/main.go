@@ -6,10 +6,12 @@ import (
 	"net"
 	"net/http"
 
+	"github.com/Nv7-Github/CryptoMail/backend/gmail"
 	"github.com/Nv7-Github/CryptoMail/backend/pb"
-	"google.golang.org/grpc"
+	"github.com/Nv7-Github/CryptoMail/backend/storage"
 
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
+	"google.golang.org/grpc"
 )
 
 const port = ":8080"
@@ -25,6 +27,9 @@ func (s *server) Add(ctx context.Context, req *pb.AddRequest) (*pb.AddResponse, 
 }
 
 func main() {
+	storage.InitStorage()
+	gmail.InitGmail()
+
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		panic(err)

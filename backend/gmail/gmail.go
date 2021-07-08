@@ -1,0 +1,5 @@
+package gmail
+
+func InitGmail() {
+
+}
