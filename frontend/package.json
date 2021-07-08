@@ -1,0 +1,39 @@
+{
+  "name": "gdo",
+  "version": "1.0.0",
+  "description": "The web client for GDO!",
+  "private": "true",
+  "scripts": {
+    "build": "webpack --mode production",
+    "serve": "webpack serve --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nv7-Github/gdo_client.git"
+  },
+  "keywords": [
+    "gdo"
+  ],
+  "author": "Nv7",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Nv7-Github/gdo_client/issues"
+  },
+  "homepage": "https://github.com/Nv7-Github/gdo_client#readme",
+  "devDependencies": {
+    "css-loader": "^5.2.6",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^9.2.2",
+    "typescript": "^4.3.2",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.9.2",
+    "bootstrap": "^5.0.1",
+    "bootstrap-icons": "^1.5.0",
+    "file-loader": "^6.2.0"
+  }
+}
