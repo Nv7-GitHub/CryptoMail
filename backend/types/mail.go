@@ -1,4 +1,4 @@
-package mail
+package types
 
 type Mail struct {
 	From    string

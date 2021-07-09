@@ -9,17 +9,30 @@ p.innerText = "Main Page";
 p.classList.add("lead", "text-center");
 mainPage.appendChild(p);
 
-export async function main() {
-  let loggedIn = await new Promise<boolean>((resolve, _) => {
-    client.isLoggedIn(new Null(), (err, res) => {
-      if (err) {
-        handleError(err);
-        resolve(false);
-        return;
-      }
-      resolve(res.getValue());
-    });
-  })
+export function main() {
+  client.isLoggedIn(new Null(), (err, res) => {
+    if (err) {
+      handleError(err);
+      return;
+    }
 
-  console.log(loggedIn);
+    const loggedIn = res.getValue();
+    if (!loggedIn) {
+      client.authURL(new Null(), (loginErr, loginRes) => {
+        if (loginErr) {
+          handleError(loginErr);
+          return;
+        }
+
+        const url = loginRes.getValue();
+        location.replace(url);
+      })
+    } else {
+      client.makeService(new Null(), (error, _) => {
+        if (error) {
+          handleError(error);
+        }
+      })
+    }
+  });
 }

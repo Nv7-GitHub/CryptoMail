@@ -11,7 +11,7 @@ import { CryptoMailClient } from '../pb/cryptomail_pb_service';
 import { main } from './main';
 import { makePages } from './pages';
 
-export let client = new CryptoMailClient("http://localhost:8080");
+export let client = new CryptoMailClient("http://localhost:49152");
 
 makePages();
-//main();
+main();

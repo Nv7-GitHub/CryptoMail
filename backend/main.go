@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-const port = ":8080"
+const port = ":49152"
 
 type server struct {
 	pb.UnimplementedCryptoMailServer
@@ -24,6 +24,17 @@ func (s *server) IsLoggedIn(ctx context.Context, req *pb.Null) (*pb.Bool, error)
 	return &pb.Bool{
 		Value: gmail.HasToken(),
 	}, nil
+}
+
+func (s *server) AuthURL(ctx context.Context, req *pb.Null) (*pb.String, error) {
+	return &pb.String{
+		Value: gmail.GetURL(),
+	}, nil
+}
+
+func (s *server) MakeService(ctx context.Context, req *pb.Null) (*pb.Null, error) {
+	err := gmail.GetService()
+	return &pb.Null{}, err
 }
 
 func main() {

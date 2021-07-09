@@ -19,6 +19,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CryptoMailClient interface {
 	IsLoggedIn(ctx context.Context, in *Null, opts ...grpc.CallOption) (*Bool, error)
+	AuthURL(ctx context.Context, in *Null, opts ...grpc.CallOption) (*String, error)
+	MakeService(ctx context.Context, in *Null, opts ...grpc.CallOption) (*Null, error)
 }
 
 type cryptoMailClient struct {
@@ -38,11 +40,31 @@ func (c *cryptoMailClient) IsLoggedIn(ctx context.Context, in *Null, opts ...grp
 	return out, nil
 }
 
+func (c *cryptoMailClient) AuthURL(ctx context.Context, in *Null, opts ...grpc.CallOption) (*String, error) {
+	out := new(String)
+	err := c.cc.Invoke(ctx, "/cryptomail.CryptoMail/AuthURL", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cryptoMailClient) MakeService(ctx context.Context, in *Null, opts ...grpc.CallOption) (*Null, error) {
+	out := new(Null)
+	err := c.cc.Invoke(ctx, "/cryptomail.CryptoMail/MakeService", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CryptoMailServer is the server API for CryptoMail service.
 // All implementations must embed UnimplementedCryptoMailServer
 // for forward compatibility
 type CryptoMailServer interface {
 	IsLoggedIn(context.Context, *Null) (*Bool, error)
+	AuthURL(context.Context, *Null) (*String, error)
+	MakeService(context.Context, *Null) (*Null, error)
 	mustEmbedUnimplementedCryptoMailServer()
 }
 
@@ -52,6 +74,12 @@ type UnimplementedCryptoMailServer struct {
 
 func (UnimplementedCryptoMailServer) IsLoggedIn(context.Context, *Null) (*Bool, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IsLoggedIn not implemented")
+}
+func (UnimplementedCryptoMailServer) AuthURL(context.Context, *Null) (*String, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AuthURL not implemented")
+}
+func (UnimplementedCryptoMailServer) MakeService(context.Context, *Null) (*Null, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MakeService not implemented")
 }
 func (UnimplementedCryptoMailServer) mustEmbedUnimplementedCryptoMailServer() {}
 
@@ -84,6 +112,42 @@ func _CryptoMail_IsLoggedIn_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CryptoMail_AuthURL_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Null)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CryptoMailServer).AuthURL(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cryptomail.CryptoMail/AuthURL",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CryptoMailServer).AuthURL(ctx, req.(*Null))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CryptoMail_MakeService_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Null)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CryptoMailServer).MakeService(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cryptomail.CryptoMail/MakeService",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CryptoMailServer).MakeService(ctx, req.(*Null))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CryptoMail_ServiceDesc is the grpc.ServiceDesc for CryptoMail service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -94,6 +158,14 @@ var CryptoMail_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "IsLoggedIn",
 			Handler:    _CryptoMail_IsLoggedIn_Handler,
+		},
+		{
+			MethodName: "AuthURL",
+			Handler:    _CryptoMail_AuthURL_Handler,
+		},
+		{
+			MethodName: "MakeService",
+			Handler:    _CryptoMail_MakeService_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -13,9 +13,29 @@ type CryptoMailIsLoggedIn = {
   readonly responseType: typeof cryptomail_pb.Bool;
 };
 
+type CryptoMailAuthURL = {
+  readonly methodName: string;
+  readonly service: typeof CryptoMail;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof cryptomail_pb.Null;
+  readonly responseType: typeof cryptomail_pb.String;
+};
+
+type CryptoMailMakeService = {
+  readonly methodName: string;
+  readonly service: typeof CryptoMail;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof cryptomail_pb.Null;
+  readonly responseType: typeof cryptomail_pb.Null;
+};
+
 export class CryptoMail {
   static readonly serviceName: string;
   static readonly IsLoggedIn: CryptoMailIsLoggedIn;
+  static readonly AuthURL: CryptoMailAuthURL;
+  static readonly MakeService: CryptoMailMakeService;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -58,6 +78,24 @@ export class CryptoMailClient {
   isLoggedIn(
     requestMessage: cryptomail_pb.Null,
     callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Bool|null) => void
+  ): UnaryResponse;
+  authURL(
+    requestMessage: cryptomail_pb.Null,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.String|null) => void
+  ): UnaryResponse;
+  authURL(
+    requestMessage: cryptomail_pb.Null,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.String|null) => void
+  ): UnaryResponse;
+  makeService(
+    requestMessage: cryptomail_pb.Null,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
+  ): UnaryResponse;
+  makeService(
+    requestMessage: cryptomail_pb.Null,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
   ): UnaryResponse;
 }
 
