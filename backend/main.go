@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"net"
 	"net/http"
@@ -15,6 +16,8 @@ import (
 )
 
 const port = ":49152"
+
+var profile = *flag.String("profile", "cryptomail", "Which profile to use")
 
 type server struct {
 	pb.UnimplementedCryptoMailServer
@@ -37,8 +40,14 @@ func (s *server) MakeService(ctx context.Context, req *pb.Null) (*pb.Null, error
 	return &pb.Null{}, err
 }
 
+func (s *server) GetUnread(context.Context, *pb.Null) (*pb.MailArray, error) {
+	return gmail.GetUnread("label:UNREAD <cryptomail>")
+}
+
 func main() {
-	storage.InitStorage()
+	flag.Parse()
+
+	storage.InitStorage(profile)
 	gmail.InitGmail()
 
 	lis, err := net.Listen("tcp", port)

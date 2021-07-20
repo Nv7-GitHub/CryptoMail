@@ -59,3 +59,65 @@ export namespace String {
   }
 }
 
+export class Mail extends jspb.Message {
+  getId(): string;
+  setId(value: string): void;
+
+  getFrom(): string;
+  setFrom(value: string): void;
+
+  getTo(): string;
+  setTo(value: string): void;
+
+  getSubject(): string;
+  setSubject(value: string): void;
+
+  getBody(): string;
+  setBody(value: string): void;
+
+  getDate(): number;
+  setDate(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): Mail.AsObject;
+  static toObject(includeInstance: boolean, msg: Mail): Mail.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: Mail, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Mail;
+  static deserializeBinaryFromReader(message: Mail, reader: jspb.BinaryReader): Mail;
+}
+
+export namespace Mail {
+  export type AsObject = {
+    id: string,
+    from: string,
+    to: string,
+    subject: string,
+    body: string,
+    date: number,
+  }
+}
+
+export class MailArray extends jspb.Message {
+  clearMailsList(): void;
+  getMailsList(): Array<Mail>;
+  setMailsList(value: Array<Mail>): void;
+  addMails(value?: Mail, index?: number): Mail;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): MailArray.AsObject;
+  static toObject(includeInstance: boolean, msg: MailArray): MailArray.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: MailArray, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): MailArray;
+  static deserializeBinaryFromReader(message: MailArray, reader: jspb.BinaryReader): MailArray;
+}
+
+export namespace MailArray {
+  export type AsObject = {
+    mailsList: Array<Mail.AsObject>,
+  }
+}
+

@@ -10,17 +10,19 @@ import (
 
 var storage *sql.DB
 
-func InitStorage() {
+const appName = "cryptomail"
+
+func InitStorage(profile string) {
 	configDir, err := os.UserConfigDir()
 	if err != nil {
 		panic(err)
 	}
-	err = os.MkdirAll(filepath.Join(configDir, "cryptomail"), os.ModePerm)
+	err = os.MkdirAll(filepath.Join(configDir, appName), os.ModePerm)
 	if err != nil {
 		panic(err)
 	}
 
-	dbFile := filepath.Join(configDir, "cryptomail", "cryptomail.db")
+	dbFile := filepath.Join(configDir, appName, profile+".db")
 
 	storage, err = sql.Open("sqlite3", dbFile)
 	if err != nil {
@@ -28,6 +30,8 @@ func InitStorage() {
 	}
 
 	storage.Exec("CREATE TABLE IF NOT EXISTS config ( key TEXT, value TEXT )")
+	storage.Exec("CREATE TABLE IF NOT EXISTS freqs ( email TEXT, privkey TEXT )")
+	storage.Exec("CREATE TABLE IF NOT EXISTS friends ( email TEXT, key TEXT )")
 }
 
 // GetCfg gets a value from the table, returning false when it doesn't exist

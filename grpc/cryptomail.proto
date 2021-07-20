@@ -7,6 +7,7 @@ service CryptoMail {
   rpc IsLoggedIn(Null) returns (Bool) {}
   rpc AuthURL(Null) returns (String) {}
   rpc MakeService(Null) returns (Null) {}
+  rpc GetUnread(Null) returns (MailArray) {}
 }
 
 message Null {}
@@ -17,4 +18,17 @@ message Bool {
 
 message String {
   string value = 1;
+}
+
+message Mail {
+  string id = 1;
+  string from = 2;
+  string to = 3;
+  string subject = 4;
+  string body = 5;
+  int64 date = 6;
+}
+
+message MailArray {
+  repeated Mail mails = 1;
 }

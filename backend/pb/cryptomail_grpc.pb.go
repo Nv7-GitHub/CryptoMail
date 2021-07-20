@@ -21,6 +21,7 @@ type CryptoMailClient interface {
 	IsLoggedIn(ctx context.Context, in *Null, opts ...grpc.CallOption) (*Bool, error)
 	AuthURL(ctx context.Context, in *Null, opts ...grpc.CallOption) (*String, error)
 	MakeService(ctx context.Context, in *Null, opts ...grpc.CallOption) (*Null, error)
+	GetUnread(ctx context.Context, in *Null, opts ...grpc.CallOption) (*MailArray, error)
 }
 
 type cryptoMailClient struct {
@@ -58,6 +59,15 @@ func (c *cryptoMailClient) MakeService(ctx context.Context, in *Null, opts ...gr
 	return out, nil
 }
 
+func (c *cryptoMailClient) GetUnread(ctx context.Context, in *Null, opts ...grpc.CallOption) (*MailArray, error) {
+	out := new(MailArray)
+	err := c.cc.Invoke(ctx, "/cryptomail.CryptoMail/GetUnread", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CryptoMailServer is the server API for CryptoMail service.
 // All implementations must embed UnimplementedCryptoMailServer
 // for forward compatibility
@@ -65,6 +75,7 @@ type CryptoMailServer interface {
 	IsLoggedIn(context.Context, *Null) (*Bool, error)
 	AuthURL(context.Context, *Null) (*String, error)
 	MakeService(context.Context, *Null) (*Null, error)
+	GetUnread(context.Context, *Null) (*MailArray, error)
 	mustEmbedUnimplementedCryptoMailServer()
 }
 
@@ -80,6 +91,9 @@ func (UnimplementedCryptoMailServer) AuthURL(context.Context, *Null) (*String, e
 }
 func (UnimplementedCryptoMailServer) MakeService(context.Context, *Null) (*Null, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MakeService not implemented")
+}
+func (UnimplementedCryptoMailServer) GetUnread(context.Context, *Null) (*MailArray, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUnread not implemented")
 }
 func (UnimplementedCryptoMailServer) mustEmbedUnimplementedCryptoMailServer() {}
 
@@ -148,6 +162,24 @@ func _CryptoMail_MakeService_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CryptoMail_GetUnread_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Null)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CryptoMailServer).GetUnread(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cryptomail.CryptoMail/GetUnread",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CryptoMailServer).GetUnread(ctx, req.(*Null))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CryptoMail_ServiceDesc is the grpc.ServiceDesc for CryptoMail service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -166,6 +198,10 @@ var CryptoMail_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MakeService",
 			Handler:    _CryptoMail_MakeService_Handler,
+		},
+		{
+			MethodName: "GetUnread",
+			Handler:    _CryptoMail_GetUnread_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

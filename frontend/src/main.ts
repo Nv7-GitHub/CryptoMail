@@ -31,7 +31,21 @@ export function main() {
       client.makeService(new Null(), (error, _) => {
         if (error) {
           handleError(error);
+          return;
         }
+
+        client.getUnread(new Null(), (unreaderr, unread) => {
+          if (unreaderr) {
+            handleError(unreaderr);
+            return;
+          }
+
+          let mails = unread.getMailsList();
+          for (const mail of mails) {
+            console.log(mail.getFrom());
+            console.log(mail.getTo());
+          }
+        })
       })
     }
   });

@@ -32,6 +32,8 @@ var config = &oauth2.Config{
 	Endpoint:     google.Endpoint,
 }
 
+var cliURL *url.URL
+
 func InitGmail() {
 	p := pat.New()
 	p.Get("/callback", func(res http.ResponseWriter, req *http.Request) {
@@ -48,6 +50,8 @@ func InitGmail() {
 			panic(err)
 		}
 		storage.SetCfg("gmailtoken", string(dat))
+
+		http.Redirect(res, req, cliURL.String(), http.StatusTemporaryRedirect)
 	})
 
 	p.Get("/", func(res http.ResponseWriter, req *http.Request) {
@@ -60,6 +64,9 @@ func InitGmail() {
 		parameters.Add("scope", strings.Join(config.Scopes, " "))
 		parameters.Add("redirect_uri", config.RedirectURL)
 		parameters.Add("response_type", "code")
+		parameters.Add("access_type", "offline")
+
+		cliURL = req.URL
 
 		sendUrl.RawQuery = parameters.Encode()
 		url := sendUrl.String()

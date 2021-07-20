@@ -37,6 +37,15 @@ CryptoMail.MakeService = {
   responseType: cryptomail_pb.Null
 };
 
+CryptoMail.GetUnread = {
+  methodName: "GetUnread",
+  service: CryptoMail,
+  requestStream: false,
+  responseStream: false,
+  requestType: cryptomail_pb.Null,
+  responseType: cryptomail_pb.MailArray
+};
+
 exports.CryptoMail = CryptoMail;
 
 function CryptoMailClient(serviceHost, options) {
@@ -111,6 +120,37 @@ CryptoMailClient.prototype.makeService = function makeService(requestMessage, me
     callback = arguments[1];
   }
   var client = grpc.unary(CryptoMail.MakeService, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+CryptoMailClient.prototype.getUnread = function getUnread(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(CryptoMail.GetUnread, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
