@@ -8,7 +8,7 @@ import (
 	"google.golang.org/api/gmail/v1"
 )
 
-func GetUnread(query string) (*pb.MailArray, error) {
+func GetUnread(query string) ([]*pb.Mail, error) {
 	user := "me"
 	req, err := srv.Users.Messages.List(user).Q(query).Do()
 	if err != nil {
@@ -57,9 +57,7 @@ func GetUnread(query string) (*pb.MailArray, error) {
 
 		out[i] = mail
 	}
-	return &pb.MailArray{
-		Mails: out,
-	}, nil
+	return out, nil
 }
 
 func MarkRead(mail *pb.Mail) error {

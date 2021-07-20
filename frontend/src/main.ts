@@ -34,7 +34,7 @@ export function main() {
           return;
         }
 
-        client.getUnread(new Null(), (unreaderr, unread) => {
+        /*client.getUnread(new Null(), (unreaderr, unread) => {
           if (unreaderr) {
             handleError(unreaderr);
             return;
@@ -45,7 +45,7 @@ export function main() {
             console.log(mail.getFrom());
             console.log(mail.getTo());
           }
-        })
+        })*/
       })
     }
   });

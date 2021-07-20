@@ -37,13 +37,13 @@ CryptoMail.MakeService = {
   responseType: cryptomail_pb.Null
 };
 
-CryptoMail.GetUnread = {
-  methodName: "GetUnread",
+CryptoMail.RefreshMails = {
+  methodName: "RefreshMails",
   service: CryptoMail,
   requestStream: false,
   responseStream: false,
   requestType: cryptomail_pb.Null,
-  responseType: cryptomail_pb.MailArray
+  responseType: cryptomail_pb.Null
 };
 
 exports.CryptoMail = CryptoMail;
@@ -146,11 +146,11 @@ CryptoMailClient.prototype.makeService = function makeService(requestMessage, me
   };
 };
 
-CryptoMailClient.prototype.getUnread = function getUnread(requestMessage, metadata, callback) {
+CryptoMailClient.prototype.refreshMails = function refreshMails(requestMessage, metadata, callback) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
-  var client = grpc.unary(CryptoMail.GetUnread, {
+  var client = grpc.unary(CryptoMail.RefreshMails, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

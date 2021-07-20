@@ -31,13 +31,13 @@ type CryptoMailMakeService = {
   readonly responseType: typeof cryptomail_pb.Null;
 };
 
-type CryptoMailGetUnread = {
+type CryptoMailRefreshMails = {
   readonly methodName: string;
   readonly service: typeof CryptoMail;
   readonly requestStream: false;
   readonly responseStream: false;
   readonly requestType: typeof cryptomail_pb.Null;
-  readonly responseType: typeof cryptomail_pb.MailArray;
+  readonly responseType: typeof cryptomail_pb.Null;
 };
 
 export class CryptoMail {
@@ -45,7 +45,7 @@ export class CryptoMail {
   static readonly IsLoggedIn: CryptoMailIsLoggedIn;
   static readonly AuthURL: CryptoMailAuthURL;
   static readonly MakeService: CryptoMailMakeService;
-  static readonly GetUnread: CryptoMailGetUnread;
+  static readonly RefreshMails: CryptoMailRefreshMails;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -107,14 +107,14 @@ export class CryptoMailClient {
     requestMessage: cryptomail_pb.Null,
     callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
   ): UnaryResponse;
-  getUnread(
+  refreshMails(
     requestMessage: cryptomail_pb.Null,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.MailArray|null) => void
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
   ): UnaryResponse;
-  getUnread(
+  refreshMails(
     requestMessage: cryptomail_pb.Null,
-    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.MailArray|null) => void
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
   ): UnaryResponse;
 }
 

@@ -7,7 +7,8 @@ service CryptoMail {
   rpc IsLoggedIn(Null) returns (Bool) {}
   rpc AuthURL(Null) returns (String) {}
   rpc MakeService(Null) returns (Null) {}
-  rpc GetUnread(Null) returns (MailArray) {}
+  rpc RefreshMails(Null) returns (Null) {}
+  rpc NewFriendRequest(String) returns (Null) {}
 }
 
 message Null {}
