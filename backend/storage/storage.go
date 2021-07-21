@@ -12,7 +12,7 @@ var storage *sql.DB
 
 const appName = "cryptomail"
 
-func InitStorage(profile string) {
+func LoadProfile(profile string) {
 	configDir, err := os.UserConfigDir()
 	if err != nil {
 		panic(err)
@@ -30,8 +30,9 @@ func InitStorage(profile string) {
 	}
 
 	storage.Exec("CREATE TABLE IF NOT EXISTS config ( key TEXT, value TEXT )")
-	storage.Exec("CREATE TABLE IF NOT EXISTS freqs ( email TEXT, privkey TEXT )")
+	storage.Exec("CREATE TABLE IF NOT EXISTS freqs ( fromme INTEGER, email TEXT, key TEXT )")
 	storage.Exec("CREATE TABLE IF NOT EXISTS friends ( email TEXT, key TEXT )")
+	AddProfile(profile)
 }
 
 // GetCfg gets a value from the table, returning false when it doesn't exist

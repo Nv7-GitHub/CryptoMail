@@ -4,11 +4,22 @@ option go_package = "backend/pb";
 package cryptomail;
 
 service CryptoMail {
+  // Profiles
+  rpc GetProfiles(Null) returns (StringArray) {}
+  rpc LoadProfile(String) returns (Null) {}
+
+  // Authentication
   rpc IsLoggedIn(Null) returns (Bool) {}
   rpc AuthURL(Null) returns (String) {}
   rpc MakeService(Null) returns (Null) {}
+
+  // Mail
   rpc RefreshMails(Null) returns (Null) {}
+
+  // Friends
   rpc NewFriendRequest(String) returns (Null) {}
+  rpc GetFriendRequests(Null) returns (FriendRequestArray) {}
+  rpc GetFriends(Null) returns (StringArray) {}
 }
 
 message Null {}
@@ -19,6 +30,10 @@ message Bool {
 
 message String {
   string value = 1;
+}
+
+message StringArray {
+  repeated string vals = 1;
 }
 
 message Mail {
@@ -32,4 +47,19 @@ message Mail {
 
 message MailArray {
   repeated Mail mails = 1;
+}
+
+message FriendRequest {
+  bool fromMe = 1;
+  string email = 2;
+  string key = 3;
+}
+
+message FriendRequestArray {
+  repeated FriendRequest requests = 1;
+}
+
+message Friend {
+  string email = 1;
+  string key = 2;
 }

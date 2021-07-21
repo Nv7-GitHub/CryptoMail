@@ -10,6 +10,24 @@ var CryptoMail = (function () {
   return CryptoMail;
 }());
 
+CryptoMail.GetProfiles = {
+  methodName: "GetProfiles",
+  service: CryptoMail,
+  requestStream: false,
+  responseStream: false,
+  requestType: cryptomail_pb.Null,
+  responseType: cryptomail_pb.StringArray
+};
+
+CryptoMail.LoadProfile = {
+  methodName: "LoadProfile",
+  service: CryptoMail,
+  requestStream: false,
+  responseStream: false,
+  requestType: cryptomail_pb.String,
+  responseType: cryptomail_pb.Null
+};
+
 CryptoMail.IsLoggedIn = {
   methodName: "IsLoggedIn",
   service: CryptoMail,
@@ -46,12 +64,101 @@ CryptoMail.RefreshMails = {
   responseType: cryptomail_pb.Null
 };
 
+CryptoMail.NewFriendRequest = {
+  methodName: "NewFriendRequest",
+  service: CryptoMail,
+  requestStream: false,
+  responseStream: false,
+  requestType: cryptomail_pb.String,
+  responseType: cryptomail_pb.Null
+};
+
+CryptoMail.GetFriendRequests = {
+  methodName: "GetFriendRequests",
+  service: CryptoMail,
+  requestStream: false,
+  responseStream: false,
+  requestType: cryptomail_pb.Null,
+  responseType: cryptomail_pb.FriendRequestArray
+};
+
+CryptoMail.GetFriends = {
+  methodName: "GetFriends",
+  service: CryptoMail,
+  requestStream: false,
+  responseStream: false,
+  requestType: cryptomail_pb.Null,
+  responseType: cryptomail_pb.StringArray
+};
+
 exports.CryptoMail = CryptoMail;
 
 function CryptoMailClient(serviceHost, options) {
   this.serviceHost = serviceHost;
   this.options = options || {};
 }
+
+CryptoMailClient.prototype.getProfiles = function getProfiles(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(CryptoMail.GetProfiles, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+CryptoMailClient.prototype.loadProfile = function loadProfile(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(CryptoMail.LoadProfile, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
 
 CryptoMailClient.prototype.isLoggedIn = function isLoggedIn(requestMessage, metadata, callback) {
   if (arguments.length === 2) {
@@ -151,6 +258,99 @@ CryptoMailClient.prototype.refreshMails = function refreshMails(requestMessage, 
     callback = arguments[1];
   }
   var client = grpc.unary(CryptoMail.RefreshMails, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+CryptoMailClient.prototype.newFriendRequest = function newFriendRequest(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(CryptoMail.NewFriendRequest, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+CryptoMailClient.prototype.getFriendRequests = function getFriendRequests(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(CryptoMail.GetFriendRequests, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+CryptoMailClient.prototype.getFriends = function getFriends(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(CryptoMail.GetFriends, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

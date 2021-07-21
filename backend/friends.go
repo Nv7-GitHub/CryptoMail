@@ -47,5 +47,5 @@ func NewFriendRequest(email string) error {
 			Bytes: x509.MarshalPKCS1PrivateKey(key),
 		},
 	))
-	return storage.AddFriendRequest(email, privKey)
+	return storage.AddFriendRequest(true, email, privKey)
 }

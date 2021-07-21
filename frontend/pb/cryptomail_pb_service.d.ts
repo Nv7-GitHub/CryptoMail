@@ -4,6 +4,24 @@
 import * as cryptomail_pb from "./cryptomail_pb";
 import {grpc} from "@improbable-eng/grpc-web";
 
+type CryptoMailGetProfiles = {
+  readonly methodName: string;
+  readonly service: typeof CryptoMail;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof cryptomail_pb.Null;
+  readonly responseType: typeof cryptomail_pb.StringArray;
+};
+
+type CryptoMailLoadProfile = {
+  readonly methodName: string;
+  readonly service: typeof CryptoMail;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof cryptomail_pb.String;
+  readonly responseType: typeof cryptomail_pb.Null;
+};
+
 type CryptoMailIsLoggedIn = {
   readonly methodName: string;
   readonly service: typeof CryptoMail;
@@ -40,12 +58,44 @@ type CryptoMailRefreshMails = {
   readonly responseType: typeof cryptomail_pb.Null;
 };
 
+type CryptoMailNewFriendRequest = {
+  readonly methodName: string;
+  readonly service: typeof CryptoMail;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof cryptomail_pb.String;
+  readonly responseType: typeof cryptomail_pb.Null;
+};
+
+type CryptoMailGetFriendRequests = {
+  readonly methodName: string;
+  readonly service: typeof CryptoMail;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof cryptomail_pb.Null;
+  readonly responseType: typeof cryptomail_pb.FriendRequestArray;
+};
+
+type CryptoMailGetFriends = {
+  readonly methodName: string;
+  readonly service: typeof CryptoMail;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof cryptomail_pb.Null;
+  readonly responseType: typeof cryptomail_pb.StringArray;
+};
+
 export class CryptoMail {
   static readonly serviceName: string;
+  static readonly GetProfiles: CryptoMailGetProfiles;
+  static readonly LoadProfile: CryptoMailLoadProfile;
   static readonly IsLoggedIn: CryptoMailIsLoggedIn;
   static readonly AuthURL: CryptoMailAuthURL;
   static readonly MakeService: CryptoMailMakeService;
   static readonly RefreshMails: CryptoMailRefreshMails;
+  static readonly NewFriendRequest: CryptoMailNewFriendRequest;
+  static readonly GetFriendRequests: CryptoMailGetFriendRequests;
+  static readonly GetFriends: CryptoMailGetFriends;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -80,6 +130,24 @@ export class CryptoMailClient {
   readonly serviceHost: string;
 
   constructor(serviceHost: string, options?: grpc.RpcOptions);
+  getProfiles(
+    requestMessage: cryptomail_pb.Null,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.StringArray|null) => void
+  ): UnaryResponse;
+  getProfiles(
+    requestMessage: cryptomail_pb.Null,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.StringArray|null) => void
+  ): UnaryResponse;
+  loadProfile(
+    requestMessage: cryptomail_pb.String,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
+  ): UnaryResponse;
+  loadProfile(
+    requestMessage: cryptomail_pb.String,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
+  ): UnaryResponse;
   isLoggedIn(
     requestMessage: cryptomail_pb.Null,
     metadata: grpc.Metadata,
@@ -115,6 +183,33 @@ export class CryptoMailClient {
   refreshMails(
     requestMessage: cryptomail_pb.Null,
     callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
+  ): UnaryResponse;
+  newFriendRequest(
+    requestMessage: cryptomail_pb.String,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
+  ): UnaryResponse;
+  newFriendRequest(
+    requestMessage: cryptomail_pb.String,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
+  ): UnaryResponse;
+  getFriendRequests(
+    requestMessage: cryptomail_pb.Null,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.FriendRequestArray|null) => void
+  ): UnaryResponse;
+  getFriendRequests(
+    requestMessage: cryptomail_pb.Null,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.FriendRequestArray|null) => void
+  ): UnaryResponse;
+  getFriends(
+    requestMessage: cryptomail_pb.Null,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.StringArray|null) => void
+  ): UnaryResponse;
+  getFriends(
+    requestMessage: cryptomail_pb.Null,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.StringArray|null) => void
   ): UnaryResponse;
 }
 

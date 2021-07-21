@@ -5,6 +5,7 @@ import (
 
 	"github.com/Nv7-Github/CryptoMail/backend/gmail"
 	"github.com/Nv7-Github/CryptoMail/backend/pb"
+	"github.com/Nv7-Github/CryptoMail/backend/storage"
 )
 
 type server struct {
@@ -45,4 +46,29 @@ func (s *server) RefreshMails(context.Context, *pb.Null) (*pb.Null, error) {
 	}
 
 	return nil, nil
+}
+
+func (s *server) GetFriendRequests(ctx context.Context, req *pb.Null) (*pb.FriendRequestArray, error) {
+	out, err := storage.GetFriendRequests()
+	return &pb.FriendRequestArray{
+		Requests: out,
+	}, err
+}
+
+func (s *server) GetFriends(ctx context.Context, req *pb.Null) (*pb.StringArray, error) {
+	out, err := storage.GetFriends()
+	return &pb.StringArray{
+		Vals: out,
+	}, err
+}
+
+func (s *server) GetProfiles(ctx context.Context, req *pb.Null) (*pb.StringArray, error) {
+	return &pb.StringArray{
+		Vals: storage.GetProfiles(),
+	}, nil
+}
+
+func (s *server) LoadProfile(ctx context.Context, req *pb.String) (*pb.Null, error) {
+	storage.LoadProfile(req.Value)
+	return &pb.Null{}, nil
 }

@@ -21,7 +21,7 @@ var profile = *flag.String("profile", "cryptomail", "Which profile to use")
 func main() {
 	flag.Parse()
 
-	storage.InitStorage(profile)
+	storage.LoadProfile(profile)
 	gmail.InitGmail()
 
 	lis, err := net.Listen("tcp", port)
