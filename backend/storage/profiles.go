@@ -24,7 +24,7 @@ func AddProfile(profile string) {
 	dec := json.NewDecoder(f)
 	var profiles []string
 	if err := dec.Decode(&profiles); err != nil {
-		panic(err)
+		profiles = make([]string, 0)
 	}
 
 	// Add Profile
