@@ -18,7 +18,7 @@ export async function friendsMain() {
   group.appendChild(input);
 
   let btn = document.createElement("button");
-  btn.innerHTML = `<i class="bi bi-plus"></i>`;
+  btn.innerHTML = `<i class="bi bi-plus-lg"></i>`;
   btn.classList.add("btn", "btn-outline-secondary");
   btn.type = "submit";
   group.appendChild(btn);
