@@ -36,17 +36,17 @@ func (s *server) NewFriendRequest(ctx context.Context, req *pb.String) (*pb.Null
 func (s *server) RefreshMails(context.Context, *pb.Null) (*pb.Null, error) {
 	unreads, err := gmail.GetUnread("label:UNREAD <cryptomail>")
 	if err != nil {
-		return nil, err
+		return &pb.Null{}, err
 	}
 
 	for _, val := range unreads {
 		err = ProcessMail(val)
 		if err != nil {
-			return nil, err
+			return &pb.Null{}, err
 		}
 	}
 
-	return nil, nil
+	return &pb.Null{}, nil
 }
 
 func (s *server) GetFriendRequests(ctx context.Context, req *pb.Null) (*pb.FriendRequestArray, error) {

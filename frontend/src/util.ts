@@ -41,7 +41,7 @@ export function handleError(err: ServiceError) {
   modal.show();
 }
 
-export function makeList(title: string, items: string[], btns: HTMLElement[]): HTMLElement {
+export function makeList(items: string[], btns: HTMLElement[]): HTMLElement {
   let tbl = document.createElement("ul");
   tbl.classList.add("list-group");
 
@@ -52,13 +52,21 @@ export function makeList(title: string, items: string[], btns: HTMLElement[]): H
     let div = document.createElement("div");
     div.classList.add("p-0", "m-0", "flex-grow-1");
     div.innerText = items[i];
-    div.style.transform = "translateY(20%)";
     li.appendChild(div);
 
-    li.appendChild(btns[i]);
+    if (btns) {
+      div.style.transform = "translateY(20%)";
+      li.appendChild(btns[i]);
+    }
 
     tbl.appendChild(li);
   }
   
   return tbl;
+}
+
+export function grpcErrorHandler(err: ServiceError, _: any) {
+  if (err) {
+    handleError(err); 
+  }
 }

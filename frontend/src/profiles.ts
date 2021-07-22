@@ -1,6 +1,6 @@
 import { client } from ".";
 import { String, Null } from "../pb/cryptomail_pb";
-import { authenticate } from "./auth";
+import { reload } from "./main";
 import { handleError, makeList } from "./util";
 
 async function getProfiles(): Promise<string[]> {
@@ -96,7 +96,7 @@ async function getProfilesList(): Promise<HTMLElement> {
             handleError(err);
           } else {
             await reloadProfilesList();
-            await authenticate();
+            await reload();
           }
         });
       })
@@ -104,5 +104,5 @@ async function getProfilesList(): Promise<HTMLElement> {
 
     btns[i] = btn;
   }
-  return makeList("Profiles", profiles, btns);
+  return makeList(profiles, btns);
 }
