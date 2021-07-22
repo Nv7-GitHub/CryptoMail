@@ -33,6 +33,8 @@ func LoadProfile(profile string) {
 	storage.Exec("CREATE TABLE IF NOT EXISTS freqs ( fromme INTEGER, email TEXT, key TEXT )")
 	storage.Exec("CREATE TABLE IF NOT EXISTS friends ( email TEXT, key TEXT )")
 
+	AddProfile(profile)
+
 	// Save Current Profile
 	currFile := filepath.Join(configDir, appName, "curr.txt")
 	f, err := os.Create(currFile)
