@@ -21,6 +21,7 @@ type CryptoMailClient interface {
 	// Profiles
 	GetProfiles(ctx context.Context, in *Null, opts ...grpc.CallOption) (*StringArray, error)
 	LoadProfile(ctx context.Context, in *String, opts ...grpc.CallOption) (*Null, error)
+	GetCurrentProfile(ctx context.Context, in *Null, opts ...grpc.CallOption) (*String, error)
 	// Authentication
 	IsLoggedIn(ctx context.Context, in *Null, opts ...grpc.CallOption) (*Bool, error)
 	AuthURL(ctx context.Context, in *Null, opts ...grpc.CallOption) (*String, error)
@@ -53,6 +54,15 @@ func (c *cryptoMailClient) GetProfiles(ctx context.Context, in *Null, opts ...gr
 func (c *cryptoMailClient) LoadProfile(ctx context.Context, in *String, opts ...grpc.CallOption) (*Null, error) {
 	out := new(Null)
 	err := c.cc.Invoke(ctx, "/cryptomail.CryptoMail/LoadProfile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cryptoMailClient) GetCurrentProfile(ctx context.Context, in *Null, opts ...grpc.CallOption) (*String, error) {
+	out := new(String)
+	err := c.cc.Invoke(ctx, "/cryptomail.CryptoMail/GetCurrentProfile", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -129,6 +139,7 @@ type CryptoMailServer interface {
 	// Profiles
 	GetProfiles(context.Context, *Null) (*StringArray, error)
 	LoadProfile(context.Context, *String) (*Null, error)
+	GetCurrentProfile(context.Context, *Null) (*String, error)
 	// Authentication
 	IsLoggedIn(context.Context, *Null) (*Bool, error)
 	AuthURL(context.Context, *Null) (*String, error)
@@ -151,6 +162,9 @@ func (UnimplementedCryptoMailServer) GetProfiles(context.Context, *Null) (*Strin
 }
 func (UnimplementedCryptoMailServer) LoadProfile(context.Context, *String) (*Null, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoadProfile not implemented")
+}
+func (UnimplementedCryptoMailServer) GetCurrentProfile(context.Context, *Null) (*String, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCurrentProfile not implemented")
 }
 func (UnimplementedCryptoMailServer) IsLoggedIn(context.Context, *Null) (*Bool, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IsLoggedIn not implemented")
@@ -218,6 +232,24 @@ func _CryptoMail_LoadProfile_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CryptoMailServer).LoadProfile(ctx, req.(*String))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CryptoMail_GetCurrentProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Null)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CryptoMailServer).GetCurrentProfile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cryptomail.CryptoMail/GetCurrentProfile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CryptoMailServer).GetCurrentProfile(ctx, req.(*Null))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -362,6 +394,10 @@ var CryptoMail_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LoadProfile",
 			Handler:    _CryptoMail_LoadProfile_Handler,
+		},
+		{
+			MethodName: "GetCurrentProfile",
+			Handler:    _CryptoMail_GetCurrentProfile_Handler,
 		},
 		{
 			MethodName: "IsLoggedIn",

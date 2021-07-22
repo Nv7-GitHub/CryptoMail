@@ -40,3 +40,25 @@ export function handleError(err: ServiceError) {
   let modal = new Modal(mod);
   modal.show();
 }
+
+export function makeList(title: string, items: string[], btns: HTMLElement[]): HTMLElement {
+  let tbl = document.createElement("ul");
+  tbl.classList.add("list-group");
+
+  for (var i = 0; i < items.length; i++) {
+    let li = document.createElement("li");
+    li.classList.add("list-group-item", "d-flex", "justify-content-between");
+
+    let div = document.createElement("div");
+    div.classList.add("p-0", "m-0", "flex-grow-1");
+    div.innerText = items[i];
+    div.style.transform = "translateY(20%)";
+    li.appendChild(div);
+
+    li.appendChild(btns[i]);
+
+    tbl.appendChild(li);
+  }
+  
+  return tbl;
+}

@@ -22,6 +22,15 @@ type CryptoMailLoadProfile = {
   readonly responseType: typeof cryptomail_pb.Null;
 };
 
+type CryptoMailGetCurrentProfile = {
+  readonly methodName: string;
+  readonly service: typeof CryptoMail;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof cryptomail_pb.Null;
+  readonly responseType: typeof cryptomail_pb.String;
+};
+
 type CryptoMailIsLoggedIn = {
   readonly methodName: string;
   readonly service: typeof CryptoMail;
@@ -89,6 +98,7 @@ export class CryptoMail {
   static readonly serviceName: string;
   static readonly GetProfiles: CryptoMailGetProfiles;
   static readonly LoadProfile: CryptoMailLoadProfile;
+  static readonly GetCurrentProfile: CryptoMailGetCurrentProfile;
   static readonly IsLoggedIn: CryptoMailIsLoggedIn;
   static readonly AuthURL: CryptoMailAuthURL;
   static readonly MakeService: CryptoMailMakeService;
@@ -147,6 +157,15 @@ export class CryptoMailClient {
   loadProfile(
     requestMessage: cryptomail_pb.String,
     callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
+  ): UnaryResponse;
+  getCurrentProfile(
+    requestMessage: cryptomail_pb.Null,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.String|null) => void
+  ): UnaryResponse;
+  getCurrentProfile(
+    requestMessage: cryptomail_pb.Null,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.String|null) => void
   ): UnaryResponse;
   isLoggedIn(
     requestMessage: cryptomail_pb.Null,

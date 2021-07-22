@@ -1,5 +1,6 @@
 import { friendsPage } from "./friends";
 import { mainPage } from "./main";
+import { profilesPage } from "./profiles";
 
 export function makePages() {
   // Navbar
@@ -59,6 +60,16 @@ export function makePages() {
   friends.appendChild(friendsBtn);
   items.appendChild(friends);
 
+  // Profiles Button
+  let profiles = document.createElement("li");
+  profiles.classList.add("navbar-item");
+  let profilesBtn = document.createElement("a");
+  profilesBtn.href = "#";
+  profilesBtn.innerText = "Profiles";
+  profilesBtn.classList.add("nav-link");
+  profiles.appendChild(profilesBtn);
+  items.appendChild(profiles);
+
   // Finish navbar up
   cont.appendChild(items);
   navbar.appendChild(container);
@@ -74,6 +85,7 @@ export function makePages() {
   homeBtn.onclick = () => {
     body.removeChild(body.firstChild);
     friendsBtn.classList.remove("active");
+    profilesBtn.classList.remove("active");
     homeBtn.classList.add("active");
     body.appendChild(mainPage);
   }
@@ -81,7 +93,16 @@ export function makePages() {
   friendsBtn.onclick = () => {
     body.removeChild(body.firstChild);
     homeBtn.classList.remove("active");
+    profilesBtn.classList.remove("active");
     friendsBtn.classList.add("active");
     body.appendChild(friendsPage);
+  }
+
+  profilesBtn.onclick = () => {
+    body.removeChild(body.firstChild);
+    homeBtn.classList.remove("active");
+    friendsBtn.classList.remove("active");
+    profilesBtn.classList.add("active");
+    body.appendChild(profilesPage);
   }
 }

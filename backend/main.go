@@ -16,12 +16,15 @@ import (
 
 const port = ":49152"
 
-var profile = *flag.String("profile", "cryptomail", "Which profile to use")
-
 func main() {
 	flag.Parse()
 
-	storage.LoadProfile(profile)
+	curr, exists := storage.GetCurrentProfile()
+	if !exists {
+		curr = "cryptomail"
+	}
+	storage.LoadProfile(curr)
+
 	gmail.InitGmail()
 
 	lis, err := net.Listen("tcp", port)

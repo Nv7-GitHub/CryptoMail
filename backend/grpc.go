@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 
 	"github.com/Nv7-Github/CryptoMail/backend/gmail"
 	"github.com/Nv7-Github/CryptoMail/backend/pb"
@@ -71,4 +72,12 @@ func (s *server) GetProfiles(ctx context.Context, req *pb.Null) (*pb.StringArray
 func (s *server) LoadProfile(ctx context.Context, req *pb.String) (*pb.Null, error) {
 	storage.LoadProfile(req.Value)
 	return &pb.Null{}, nil
+}
+
+func (s *server) GetCurrentProfile(ctx context.Context, req *pb.Null) (*pb.String, error) {
+	curr, exists := storage.GetCurrentProfile()
+	if !exists {
+		return nil, errors.New("no current profile")
+	}
+	return &pb.String{Value: curr}, nil
 }

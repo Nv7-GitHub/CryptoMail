@@ -13,19 +13,17 @@ func AddProfile(profile string) {
 	}
 	profileFile := filepath.Join(configDir, appName, "profiles.json")
 
-	// Get File
-	f, err := os.Create(profileFile)
+	// Save Current Profile
+	currFile := filepath.Join(configDir, appName, "curr.txt")
+	f, err := os.Create(currFile)
 	if err != nil {
 		panic(err)
 	}
-	defer f.Close()
 
-	// Load Profiles
-	dec := json.NewDecoder(f)
-	var profiles []string
-	if err := dec.Decode(&profiles); err != nil {
-		profiles = make([]string, 0)
-	}
+	f.WriteString(profile)
+	f.Close()
+
+	profiles := GetProfiles()
 
 	// Add Profile
 	for _, prof := range profiles {
@@ -36,8 +34,11 @@ func AddProfile(profile string) {
 	profiles = append(profiles, profile)
 
 	// Save
-	f.Truncate(0)
-	f.Seek(0, 0)
+	f, err = os.Create(profileFile)
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
 
 	enc := json.NewEncoder(f)
 	err = enc.Encode(profiles)
@@ -54,9 +55,9 @@ func GetProfiles() []string {
 	profileFile := filepath.Join(configDir, appName, "profiles.json")
 
 	// Get File
-	f, err := os.Create(profileFile)
+	f, err := os.Open(profileFile)
 	if err != nil {
-		panic(err)
+		return []string{}
 	}
 	defer f.Close()
 
@@ -64,8 +65,23 @@ func GetProfiles() []string {
 	dec := json.NewDecoder(f)
 	var profiles []string
 	if err := dec.Decode(&profiles); err != nil {
-		panic(err)
+		return []string{}
 	}
 
 	return profiles
+}
+
+func GetCurrentProfile() (string, bool) {
+	configDir, err := os.UserConfigDir()
+	if err != nil {
+		panic(err)
+	}
+	currFile := filepath.Join(configDir, appName, "curr.txt")
+
+	curr, err := os.ReadFile(currFile)
+	if err != nil {
+		return "", false
+	}
+
+	return string(curr), true
 }
