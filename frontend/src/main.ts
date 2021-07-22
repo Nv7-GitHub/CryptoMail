@@ -1,4 +1,5 @@
 import { authenticate } from "./auth";
+import { friendsMain } from "./friends";
 import { profilesMain } from "./profiles";
 
 export var mainPage = document.createElement("div");
@@ -11,4 +12,5 @@ mainPage.appendChild(p);
 export async function main() {
   await authenticate()
   profilesMain();
+  friendsMain();
 }
