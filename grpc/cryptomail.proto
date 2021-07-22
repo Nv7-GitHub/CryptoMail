@@ -6,6 +6,7 @@ package cryptomail;
 service CryptoMail {
   // Profiles
   rpc GetProfiles(Null) returns (StringArray) {}
+  rpc NewProfile(String) returns (Null) {}
   rpc LoadProfile(String) returns (Null) {}
   rpc GetCurrentProfile(Null) returns (String) {}
 

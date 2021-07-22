@@ -74,6 +74,11 @@ func (s *server) LoadProfile(ctx context.Context, req *pb.String) (*pb.Null, err
 	return &pb.Null{}, nil
 }
 
+func (s *server) NewProfile(ctx context.Context, req *pb.String) (*pb.Null, error) {
+	storage.AddProfile(req.Value)
+	return &pb.Null{}, nil
+}
+
 func (s *server) GetCurrentProfile(ctx context.Context, req *pb.Null) (*pb.String, error) {
 	curr, exists := storage.GetCurrentProfile()
 	if !exists {

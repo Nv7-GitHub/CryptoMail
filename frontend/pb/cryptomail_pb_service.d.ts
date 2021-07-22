@@ -13,6 +13,15 @@ type CryptoMailGetProfiles = {
   readonly responseType: typeof cryptomail_pb.StringArray;
 };
 
+type CryptoMailNewProfile = {
+  readonly methodName: string;
+  readonly service: typeof CryptoMail;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof cryptomail_pb.String;
+  readonly responseType: typeof cryptomail_pb.Null;
+};
+
 type CryptoMailLoadProfile = {
   readonly methodName: string;
   readonly service: typeof CryptoMail;
@@ -97,6 +106,7 @@ type CryptoMailGetFriends = {
 export class CryptoMail {
   static readonly serviceName: string;
   static readonly GetProfiles: CryptoMailGetProfiles;
+  static readonly NewProfile: CryptoMailNewProfile;
   static readonly LoadProfile: CryptoMailLoadProfile;
   static readonly GetCurrentProfile: CryptoMailGetCurrentProfile;
   static readonly IsLoggedIn: CryptoMailIsLoggedIn;
@@ -148,6 +158,15 @@ export class CryptoMailClient {
   getProfiles(
     requestMessage: cryptomail_pb.Null,
     callback: (error: ServiceError|null, responseMessage: cryptomail_pb.StringArray|null) => void
+  ): UnaryResponse;
+  newProfile(
+    requestMessage: cryptomail_pb.String,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
+  ): UnaryResponse;
+  newProfile(
+    requestMessage: cryptomail_pb.String,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
   ): UnaryResponse;
   loadProfile(
     requestMessage: cryptomail_pb.String,

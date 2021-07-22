@@ -1,5 +1,6 @@
 import { client } from ".";
-import { Null } from "../pb/cryptomail_pb";
+import { String, Null } from "../pb/cryptomail_pb";
+import { authenticate } from "./auth";
 import { handleError, makeList } from "./util";
 
 async function getProfiles(): Promise<string[]> {
@@ -36,7 +37,40 @@ export async function profilesMain() {
   h1.innerText = "Profiles";
   profilesPage.appendChild(h1);
 
+  let group = document.createElement("div");
+  group.classList.add("input-group", "mb-3");
+  
+  let input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "New profile name..."
+  input.classList.add("form-control");
+  group.appendChild(input);
+
+  let btn = document.createElement("button");
+  btn.innerHTML = `<i class="bi bi-plus"></i>`;
+  btn.classList.add("btn", "btn-outline-secondary");
+  group.appendChild(btn);
+  btn.addEventListener("click", () => {
+    let v = new String();
+    v.setValue(input.value);
+    client.newProfile(v, async (err, _) => {
+      if (err) {
+        handleError(err);
+      } else {
+        await reloadProfilesList();
+      }
+    });
+  });
+
+  profilesPage.appendChild(group);
+
   tbl = await getProfilesList()
+  profilesPage.appendChild(tbl);
+}
+
+async function reloadProfilesList() {
+  profilesPage.removeChild(tbl);
+  tbl = await getProfilesList();
   profilesPage.appendChild(tbl);
 }
 
@@ -53,6 +87,19 @@ async function getProfilesList(): Promise<HTMLElement> {
     if (profiles[i] === curr) {
       btn.disabled = true;
       btn.innerText = "Selected"
+    } else {
+      btn.addEventListener("click", () => {
+        let v = new String();
+        v.setValue(profiles[i]);
+        client.loadProfile(v, async (err, _) => {
+          if (err) {
+            handleError(err);
+          } else {
+            await reloadProfilesList();
+            await authenticate();
+          }
+        });
+      })
     }
 
     btns[i] = btn;

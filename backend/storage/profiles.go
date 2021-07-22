@@ -12,17 +12,6 @@ func AddProfile(profile string) {
 		panic(err)
 	}
 	profileFile := filepath.Join(configDir, appName, "profiles.json")
-
-	// Save Current Profile
-	currFile := filepath.Join(configDir, appName, "curr.txt")
-	f, err := os.Create(currFile)
-	if err != nil {
-		panic(err)
-	}
-
-	f.WriteString(profile)
-	f.Close()
-
 	profiles := GetProfiles()
 
 	// Add Profile
@@ -34,7 +23,7 @@ func AddProfile(profile string) {
 	profiles = append(profiles, profile)
 
 	// Save
-	f, err = os.Create(profileFile)
+	f, err := os.Create(profileFile)
 	if err != nil {
 		panic(err)
 	}

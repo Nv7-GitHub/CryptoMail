@@ -19,6 +19,15 @@ CryptoMail.GetProfiles = {
   responseType: cryptomail_pb.StringArray
 };
 
+CryptoMail.NewProfile = {
+  methodName: "NewProfile",
+  service: CryptoMail,
+  requestStream: false,
+  responseStream: false,
+  requestType: cryptomail_pb.String,
+  responseType: cryptomail_pb.Null
+};
+
 CryptoMail.LoadProfile = {
   methodName: "LoadProfile",
   service: CryptoMail,
@@ -112,6 +121,37 @@ CryptoMailClient.prototype.getProfiles = function getProfiles(requestMessage, me
     callback = arguments[1];
   }
   var client = grpc.unary(CryptoMail.GetProfiles, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+CryptoMailClient.prototype.newProfile = function newProfile(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(CryptoMail.NewProfile, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

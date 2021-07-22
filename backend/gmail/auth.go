@@ -21,6 +21,8 @@ const gmailPort = ":49153"
 const id = "668455781350-4ge633j7lop4f4a6mb76jt4aimk0qm8a.apps.googleusercontent.com"
 const secret = "EvEO_GxK76PIe6XwhTH4QFIi"
 
+const cliURL = "http://localhost:3000"
+
 var tok *oauth2.Token
 var srv *gmail.Service
 
@@ -31,8 +33,6 @@ var config = &oauth2.Config{
 	Scopes:       []string{"https://www.googleapis.com/auth/gmail.modify", "https://www.googleapis.com/auth/userinfo.email"},
 	Endpoint:     google.Endpoint,
 }
-
-var cliURL *url.URL
 
 func InitGmail() {
 	p := pat.New()
@@ -51,7 +51,7 @@ func InitGmail() {
 		}
 		storage.SetCfg("gmailtoken", string(dat))
 
-		http.Redirect(res, req, cliURL.String(), http.StatusTemporaryRedirect)
+		http.Redirect(res, req, cliURL, http.StatusTemporaryRedirect)
 	})
 
 	p.Get("/", func(res http.ResponseWriter, req *http.Request) {
@@ -65,8 +65,6 @@ func InitGmail() {
 		parameters.Add("redirect_uri", config.RedirectURL)
 		parameters.Add("response_type", "code")
 		parameters.Add("access_type", "offline")
-
-		cliURL = req.URL
 
 		sendUrl.RawQuery = parameters.Encode()
 		url := sendUrl.String()
