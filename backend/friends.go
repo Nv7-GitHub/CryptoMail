@@ -8,6 +8,7 @@ import (
 	"encoding/hex"
 	"encoding/pem"
 	"io"
+	"strings"
 
 	"github.com/Nv7-Github/CryptoMail/backend/gmail"
 	"github.com/Nv7-Github/CryptoMail/backend/pb"
@@ -22,7 +23,7 @@ func NewFriendRequest(email string) error {
 	// Make key
 	key, err := rsa.GenerateKey(rand.Reader, rsaSize)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	// Convert to string
@@ -76,14 +77,14 @@ func AcceptFriendRequest(email string) error {
 	// Encrypt with key
 	out, err := rsa.EncryptOAEP(sha256.New(), rand.Reader, pubKey, key, []byte(label))
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	// Send mail
 	msg := &pb.Mail{
 		To:      email,
 		Subject: "<cryptomail> <facc>",
-		Body:    string(out),
+		Body:    hex.EncodeToString(out),
 	}
 	err = gmail.SendMail(msg)
 	if err != nil {
@@ -91,16 +92,23 @@ func AcceptFriendRequest(email string) error {
 	}
 
 	// Remove from DB
-	return storage.RemoveFriendRequest(email)
-}
-
-func ProcessFAcc(email string, content string) error {
-	privKeyRaw, err := storage.GetFriendRequest(email)
+	err = storage.RemoveFriendRequest(email)
 	if err != nil {
 		return err
 	}
 
+	// Add to Friends
+	return storage.AddFriend(email, hex.EncodeToString(key))
+}
+
+func ProcessFAcc(email string, content string) error {
+	content = strings.TrimSpace(content)
+
 	// Decode PEM Key
+	privKeyRaw, err := storage.GetFriendRequest(email)
+	if err != nil {
+		return err
+	}
 	privKeyPem, _ := pem.Decode([]byte(privKeyRaw.Key))
 	privKey, err := x509.ParsePKCS1PrivateKey(privKeyPem.Bytes)
 	if err != nil {
@@ -108,11 +116,21 @@ func ProcessFAcc(email string, content string) error {
 	}
 
 	// Decrypt and get AES key
-	key, err := rsa.DecryptOAEP(sha256.New(), rand.Reader, privKey, []byte(content), []byte(label))
+	cont, err := hex.DecodeString(content)
 	if err != nil {
-		panic(err)
+		return err
+	}
+	key, err := rsa.DecryptOAEP(sha256.New(), rand.Reader, privKey, cont, []byte(label))
+	if err != nil {
+		return err
 	}
 
 	// Save AES key as hex
-	return storage.AddFriend(email, hex.EncodeToString(key))
+	err = storage.AddFriend(email, hex.EncodeToString(key))
+	if err != nil {
+		return err
+	}
+
+	// Remove From Friend Requests
+	return storage.RemoveFriendRequest(email)
 }

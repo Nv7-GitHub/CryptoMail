@@ -103,6 +103,15 @@ type CryptoMailGetFriends = {
   readonly responseType: typeof cryptomail_pb.StringArray;
 };
 
+type CryptoMailAcceptFriendRequest = {
+  readonly methodName: string;
+  readonly service: typeof CryptoMail;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof cryptomail_pb.String;
+  readonly responseType: typeof cryptomail_pb.Null;
+};
+
 export class CryptoMail {
   static readonly serviceName: string;
   static readonly GetProfiles: CryptoMailGetProfiles;
@@ -116,6 +125,7 @@ export class CryptoMail {
   static readonly NewFriendRequest: CryptoMailNewFriendRequest;
   static readonly GetFriendRequests: CryptoMailGetFriendRequests;
   static readonly GetFriends: CryptoMailGetFriends;
+  static readonly AcceptFriendRequest: CryptoMailAcceptFriendRequest;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -248,6 +258,15 @@ export class CryptoMailClient {
   getFriends(
     requestMessage: cryptomail_pb.Null,
     callback: (error: ServiceError|null, responseMessage: cryptomail_pb.StringArray|null) => void
+  ): UnaryResponse;
+  acceptFriendRequest(
+    requestMessage: cryptomail_pb.String,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
+  ): UnaryResponse;
+  acceptFriendRequest(
+    requestMessage: cryptomail_pb.String,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
   ): UnaryResponse;
 }
 

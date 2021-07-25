@@ -86,3 +86,7 @@ func (s *server) GetCurrentProfile(ctx context.Context, req *pb.Null) (*pb.Strin
 	}
 	return &pb.String{Value: curr}, nil
 }
+
+func (s *server) AcceptFriendRequest(ctx context.Context, req *pb.String) (*pb.Null, error) {
+	return &pb.Null{}, AcceptFriendRequest(req.Value)
+}

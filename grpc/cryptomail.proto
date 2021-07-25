@@ -22,6 +22,7 @@ service CryptoMail {
   rpc NewFriendRequest(String) returns (Null) {}
   rpc GetFriendRequests(Null) returns (FriendRequestArray) {}
   rpc GetFriends(Null) returns (StringArray) {}
+  rpc AcceptFriendRequest(String) returns (Null) {}
 }
 
 message Null {}

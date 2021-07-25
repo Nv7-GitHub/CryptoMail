@@ -33,6 +33,7 @@ type CryptoMailClient interface {
 	NewFriendRequest(ctx context.Context, in *String, opts ...grpc.CallOption) (*Null, error)
 	GetFriendRequests(ctx context.Context, in *Null, opts ...grpc.CallOption) (*FriendRequestArray, error)
 	GetFriends(ctx context.Context, in *Null, opts ...grpc.CallOption) (*StringArray, error)
+	AcceptFriendRequest(ctx context.Context, in *String, opts ...grpc.CallOption) (*Null, error)
 }
 
 type cryptoMailClient struct {
@@ -142,6 +143,15 @@ func (c *cryptoMailClient) GetFriends(ctx context.Context, in *Null, opts ...grp
 	return out, nil
 }
 
+func (c *cryptoMailClient) AcceptFriendRequest(ctx context.Context, in *String, opts ...grpc.CallOption) (*Null, error) {
+	out := new(Null)
+	err := c.cc.Invoke(ctx, "/cryptomail.CryptoMail/AcceptFriendRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CryptoMailServer is the server API for CryptoMail service.
 // All implementations must embed UnimplementedCryptoMailServer
 // for forward compatibility
@@ -161,6 +171,7 @@ type CryptoMailServer interface {
 	NewFriendRequest(context.Context, *String) (*Null, error)
 	GetFriendRequests(context.Context, *Null) (*FriendRequestArray, error)
 	GetFriends(context.Context, *Null) (*StringArray, error)
+	AcceptFriendRequest(context.Context, *String) (*Null, error)
 	mustEmbedUnimplementedCryptoMailServer()
 }
 
@@ -200,6 +211,9 @@ func (UnimplementedCryptoMailServer) GetFriendRequests(context.Context, *Null) (
 }
 func (UnimplementedCryptoMailServer) GetFriends(context.Context, *Null) (*StringArray, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFriends not implemented")
+}
+func (UnimplementedCryptoMailServer) AcceptFriendRequest(context.Context, *String) (*Null, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AcceptFriendRequest not implemented")
 }
 func (UnimplementedCryptoMailServer) mustEmbedUnimplementedCryptoMailServer() {}
 
@@ -412,6 +426,24 @@ func _CryptoMail_GetFriends_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CryptoMail_AcceptFriendRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(String)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CryptoMailServer).AcceptFriendRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cryptomail.CryptoMail/AcceptFriendRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CryptoMailServer).AcceptFriendRequest(ctx, req.(*String))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CryptoMail_ServiceDesc is the grpc.ServiceDesc for CryptoMail service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -462,6 +494,10 @@ var CryptoMail_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetFriends",
 			Handler:    _CryptoMail_GetFriends_Handler,
+		},
+		{
+			MethodName: "AcceptFriendRequest",
+			Handler:    _CryptoMail_AcceptFriendRequest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

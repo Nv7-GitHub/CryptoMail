@@ -23,18 +23,35 @@ async function getFreqs(incoming: boolean): Promise<string[]> {
   });
 }
 
-var freqTbl = document.createElement("div");
+async function getFriends(): Promise<string[]> {
+  return new Promise<string[]>((res, _) => {
+    client.getFriends(new Null(), (err, profiles) => {
+      if (err) {
+        handleError(err);
+        return res([]);
+      }
+      res(profiles.getValsList());
+    })
+  });
+}
+
+
+let freqTbl = document.createElement("div");
 let incomingTbl = document.createElement("div");
+let friendsTbl = document.createElement("div");
 
 export async function refreshFreqs() {
   freqTbl.removeChild(freqTbl.firstChild);
   incomingTbl.removeChild(incomingTbl.firstChild);
+  friendsTbl.removeChild(friendsTbl.firstChild);
 
   let freqs = await getFreqs(false); // Get outgoing
   freqTbl.appendChild(makeList(freqs, null));
 
-  freqs = await getFreqs(true); // Get incoming
-  incomingTbl.appendChild(makeList(freqs, null)); // TODO: Add buttons to accept
+  incomingTbl.appendChild(await getIncomingTable());
+
+  let friends = await getFriends();
+  friendsTbl.appendChild(makeList(friends, null));
 }
 
 export async function friendsMain() {
@@ -85,9 +102,40 @@ export async function friendsMain() {
   h1.classList.add("mt-3");
   friendsPage.appendChild(h1);
 
-
-  freqs = await getFreqs(true); // Get incoming
-  incomingTbl.appendChild(makeList(freqs, null)); // TODO: Add buttons to accept
-  
+  incomingTbl.appendChild(await getIncomingTable());
   friendsPage.appendChild(incomingTbl); 
+
+  // View Friends
+  let friends = await getFriends();
+
+  h1 = document.createElement("h1");
+  h1.innerText = "Friends";
+  h1.classList.add("mt-3");
+  friendsPage.appendChild(h1);
+
+  friendsTbl.appendChild(makeList(friends, null));
+  friendsPage.appendChild(friendsTbl); 
+}
+
+async function getIncomingTable(): Promise<HTMLElement> {
+  let freqs = await getFreqs(true); // Get incoming
+  let btns: HTMLElement[] = new Array(freqs.length);
+  for (let i = 0; i < freqs.length; i++) {
+    let btn = document.createElement("button");
+    btn.innerText = "Accept"
+    btn.classList.add("btn", "btn-primary");
+    btn.addEventListener("click", () => {
+      let s = new String();
+      s.setValue(freqs[i]);
+      client.acceptFriendRequest(s, async (err, _) => {
+        await refreshFreqs();
+        if (err) {
+          handleError(err);
+        }
+      });
+    })
+
+    btns[i] = btn;
+  }
+  return makeList(freqs, btns)
 }
