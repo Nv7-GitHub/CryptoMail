@@ -9,6 +9,7 @@ import (
 	"github.com/Nv7-Github/CryptoMail/backend/gmail"
 	"github.com/Nv7-Github/CryptoMail/backend/pb"
 	"github.com/Nv7-Github/CryptoMail/backend/storage"
+	"github.com/Nv7-Github/CryptoMail/backend/types"
 
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"google.golang.org/grpc"
@@ -47,9 +48,17 @@ func main() {
 	}
 	defer httpS.Close()
 
-	fmt.Println("Listening at", port)
-	err = httpS.Serve(lis)
-	if err != nil {
-		panic(err)
+	if types.IsProd {
+		go ServeProd()
 	}
+
+	go func() {
+		fmt.Println("Listening gRPC at", port)
+		err = httpS.Serve(lis)
+		if err != nil {
+			panic(err)
+		}
+	}()
+
+	UIProd()
 }

@@ -27,3 +27,10 @@ In the `backend` folder, run
 go run .
 ```
 to run the backend development server. Stop it and re-start it to re-compile.
+
+# Building
+Use
+```sh
+make build
+```
+To compile to an executable called `CryptoMail`, with everything bundled in (including the JS).

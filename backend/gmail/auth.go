@@ -4,7 +4,7 @@ import (
 	"context"
 	_ "embed"
 	"encoding/json"
-	"log"
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -72,8 +72,11 @@ func InitGmail() {
 	})
 
 	go func() {
-		log.Println("listening on localhost:49153")
-		log.Fatal(http.ListenAndServe(gmailPort, p))
+		fmt.Println("listening for gmail at localhost:49153")
+		err := http.ListenAndServe(gmailPort, p)
+		if err != nil {
+			panic(err)
+		}
 	}()
 }
 

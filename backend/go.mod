@@ -12,6 +12,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.7
 	github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f // indirect
 	github.com/rs/cors v1.8.0 // indirect
+	github.com/webview/webview v0.0.0-20210330151455-f540d88dde4e
 	golang.org/x/oauth2 v0.0.0-20210628180205-a41e5a781914
 	golang.org/x/sys v0.0.0-20210616094352-59db8d763f22 // indirect
 	google.golang.org/api v0.48.0

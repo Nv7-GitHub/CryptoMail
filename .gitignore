@@ -1,2 +1,4 @@
 .vscode/*
 serviceAccount.json
+backend/dist/*
+CryptoMail
