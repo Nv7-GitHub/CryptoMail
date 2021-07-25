@@ -14,7 +14,7 @@ func GetMessages(since int64) ([]*pb.Mail, error) {
 		return nil, err
 	}
 
-	var mail *pb.Mail
+	var mail = &pb.Mail{}
 	out := make([]*pb.Mail, 0)
 
 	for res.Next() {

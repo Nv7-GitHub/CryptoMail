@@ -83,7 +83,7 @@ func GetFriends() ([]string, error) {
 
 func GetFriend(email string) (*pb.Friend, error) {
 	var key string
-	err := storage.QueryRow("SELECT key FROM freqs WHERE email=?", email).Scan(&key)
+	err := storage.QueryRow("SELECT key FROM friends WHERE email=?", email).Scan(&key)
 	return &pb.Friend{
 		Email: email,
 		Key:   key,
