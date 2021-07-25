@@ -2,3 +2,4 @@
 serviceAccount.json
 backend/dist/*
 CryptoMail
+CryptoMail.app
