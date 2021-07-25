@@ -27,7 +27,10 @@ func ProcessMail(mail *pb.Mail) error {
 				return gmail.MarkRead(mail)
 
 			case "facc": // Friend request accept
-				fmt.Println("facc")
+				err := ProcessFAcc(mail.From, mail.Body)
+				if err != nil {
+					return err
+				}
 				return gmail.MarkRead(mail)
 
 			case "msg": // Message
