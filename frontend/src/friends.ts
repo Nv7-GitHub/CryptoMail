@@ -1,5 +1,6 @@
 import { client } from ".";
 import { Null, String } from "../pb/cryptomail_pb";
+import { updateToList } from "./newmail";
 import { grpcErrorHandler, handleError, makeList } from "./util";
 
 export var friendsPage = document.createElement("div");
@@ -40,6 +41,8 @@ let freqTbl = document.createElement("div");
 let incomingTbl = document.createElement("div");
 let friendsTbl = document.createElement("div");
 
+export var friends: string[] = [];
+
 export async function refreshFreqs() {
   freqTbl.removeChild(freqTbl.firstChild);
   incomingTbl.removeChild(incomingTbl.firstChild);
@@ -50,7 +53,8 @@ export async function refreshFreqs() {
 
   incomingTbl.appendChild(await getIncomingTable());
 
-  let friends = await getFriends();
+  friends = await getFriends();
+  updateToList();
   friendsTbl.appendChild(makeList(friends, null));
 }
 
@@ -106,7 +110,8 @@ export async function friendsMain() {
   friendsPage.appendChild(incomingTbl); 
 
   // View Friends
-  let friends = await getFriends();
+  friends = await getFriends();
+  updateToList();
 
   h1 = document.createElement("h1");
   h1.innerText = "Friends";

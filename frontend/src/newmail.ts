@@ -4,6 +4,7 @@ import { Mail } from "../pb/cryptomail_pb";
 import { mainPage, mainSection } from "./main";
 import { ServiceError } from "../pb/cryptomail_pb_service";
 import { handleError } from "./util";
+import { friends } from "./friends";
 
 var conv = new Converter();
 
@@ -27,12 +28,30 @@ toInput.style.marginBottom = "-1px";
 toInput.required = true;
 toInput.classList.add("form-control");
 toInput.placeholder = "To";
+toInput.setAttribute("list", "toList");
+toInput.autocomplete = "on";
 toGroup.appendChild(toInput);
+
+var toInputValid = false;
+toInput.addEventListener("change", () => {
+  var exists = friends.includes(toInput.value);
+  if (!exists) {
+    toInput.setCustomValidity("You can only send mails to friends!");
+    toInputValid = false;
+  } else {
+    toInput.setCustomValidity("");
+    toInputValid = true;
+  }
+});
 
 let toLabel = document.createElement("label");
 toLabel.setAttribute("for", "toInput");
 toLabel.innerText = "To";
 toGroup.appendChild(toLabel);
+
+let toList = document.createElement("datalist");
+toList.id = "toList";
+toGroup.appendChild(toList);
 
 createSection.appendChild(toGroup);
 
@@ -103,6 +122,10 @@ backBtn.addEventListener("click", () => {
 });
 
 sendBtn.addEventListener("click", () => {
+  if (!toInputValid) {
+    return
+  }
+  
   let body = conv.makeHtml(bodyInput.value);
   
   let mail = new Mail();
@@ -123,4 +146,17 @@ sendBtn.addEventListener("click", () => {
 
 export function setTo(val: string) {
   toInput.value = val;
+}
+
+export function updateToList() {
+  while (toList.firstChild) {
+    toList.removeChild(toList.firstChild);
+  }
+
+  for (var email of friends) {
+    let option = document.createElement("option");
+    option.value = email;
+    option.innerText = email;
+    toList.appendChild(option);
+  }
 }
