@@ -112,6 +112,24 @@ type CryptoMailAcceptFriendRequest = {
   readonly responseType: typeof cryptomail_pb.Null;
 };
 
+type CryptoMailSendMessage = {
+  readonly methodName: string;
+  readonly service: typeof CryptoMail;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof cryptomail_pb.Mail;
+  readonly responseType: typeof cryptomail_pb.Null;
+};
+
+type CryptoMailGetMessages = {
+  readonly methodName: string;
+  readonly service: typeof CryptoMail;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof cryptomail_pb.Time;
+  readonly responseType: typeof cryptomail_pb.MailArray;
+};
+
 export class CryptoMail {
   static readonly serviceName: string;
   static readonly GetProfiles: CryptoMailGetProfiles;
@@ -126,6 +144,8 @@ export class CryptoMail {
   static readonly GetFriendRequests: CryptoMailGetFriendRequests;
   static readonly GetFriends: CryptoMailGetFriends;
   static readonly AcceptFriendRequest: CryptoMailAcceptFriendRequest;
+  static readonly SendMessage: CryptoMailSendMessage;
+  static readonly GetMessages: CryptoMailGetMessages;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -267,6 +287,24 @@ export class CryptoMailClient {
   acceptFriendRequest(
     requestMessage: cryptomail_pb.String,
     callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
+  ): UnaryResponse;
+  sendMessage(
+    requestMessage: cryptomail_pb.Mail,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
+  ): UnaryResponse;
+  sendMessage(
+    requestMessage: cryptomail_pb.Mail,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.Null|null) => void
+  ): UnaryResponse;
+  getMessages(
+    requestMessage: cryptomail_pb.Time,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.MailArray|null) => void
+  ): UnaryResponse;
+  getMessages(
+    requestMessage: cryptomail_pb.Time,
+    callback: (error: ServiceError|null, responseMessage: cryptomail_pb.MailArray|null) => void
   ): UnaryResponse;
 }
 

@@ -34,6 +34,9 @@ type CryptoMailClient interface {
 	GetFriendRequests(ctx context.Context, in *Null, opts ...grpc.CallOption) (*FriendRequestArray, error)
 	GetFriends(ctx context.Context, in *Null, opts ...grpc.CallOption) (*StringArray, error)
 	AcceptFriendRequest(ctx context.Context, in *String, opts ...grpc.CallOption) (*Null, error)
+	// Messages
+	SendMessage(ctx context.Context, in *Mail, opts ...grpc.CallOption) (*Null, error)
+	GetMessages(ctx context.Context, in *Time, opts ...grpc.CallOption) (*MailArray, error)
 }
 
 type cryptoMailClient struct {
@@ -152,6 +155,24 @@ func (c *cryptoMailClient) AcceptFriendRequest(ctx context.Context, in *String, 
 	return out, nil
 }
 
+func (c *cryptoMailClient) SendMessage(ctx context.Context, in *Mail, opts ...grpc.CallOption) (*Null, error) {
+	out := new(Null)
+	err := c.cc.Invoke(ctx, "/cryptomail.CryptoMail/SendMessage", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cryptoMailClient) GetMessages(ctx context.Context, in *Time, opts ...grpc.CallOption) (*MailArray, error) {
+	out := new(MailArray)
+	err := c.cc.Invoke(ctx, "/cryptomail.CryptoMail/GetMessages", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CryptoMailServer is the server API for CryptoMail service.
 // All implementations must embed UnimplementedCryptoMailServer
 // for forward compatibility
@@ -172,6 +193,9 @@ type CryptoMailServer interface {
 	GetFriendRequests(context.Context, *Null) (*FriendRequestArray, error)
 	GetFriends(context.Context, *Null) (*StringArray, error)
 	AcceptFriendRequest(context.Context, *String) (*Null, error)
+	// Messages
+	SendMessage(context.Context, *Mail) (*Null, error)
+	GetMessages(context.Context, *Time) (*MailArray, error)
 	mustEmbedUnimplementedCryptoMailServer()
 }
 
@@ -214,6 +238,12 @@ func (UnimplementedCryptoMailServer) GetFriends(context.Context, *Null) (*String
 }
 func (UnimplementedCryptoMailServer) AcceptFriendRequest(context.Context, *String) (*Null, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AcceptFriendRequest not implemented")
+}
+func (UnimplementedCryptoMailServer) SendMessage(context.Context, *Mail) (*Null, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendMessage not implemented")
+}
+func (UnimplementedCryptoMailServer) GetMessages(context.Context, *Time) (*MailArray, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMessages not implemented")
 }
 func (UnimplementedCryptoMailServer) mustEmbedUnimplementedCryptoMailServer() {}
 
@@ -444,6 +474,42 @@ func _CryptoMail_AcceptFriendRequest_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CryptoMail_SendMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Mail)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CryptoMailServer).SendMessage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cryptomail.CryptoMail/SendMessage",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CryptoMailServer).SendMessage(ctx, req.(*Mail))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CryptoMail_GetMessages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Time)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CryptoMailServer).GetMessages(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cryptomail.CryptoMail/GetMessages",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CryptoMailServer).GetMessages(ctx, req.(*Time))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CryptoMail_ServiceDesc is the grpc.ServiceDesc for CryptoMail service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -498,6 +564,14 @@ var CryptoMail_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AcceptFriendRequest",
 			Handler:    _CryptoMail_AcceptFriendRequest_Handler,
+		},
+		{
+			MethodName: "SendMessage",
+			Handler:    _CryptoMail_SendMessage_Handler,
+		},
+		{
+			MethodName: "GetMessages",
+			Handler:    _CryptoMail_GetMessages_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

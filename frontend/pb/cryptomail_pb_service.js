@@ -118,6 +118,24 @@ CryptoMail.AcceptFriendRequest = {
   responseType: cryptomail_pb.Null
 };
 
+CryptoMail.SendMessage = {
+  methodName: "SendMessage",
+  service: CryptoMail,
+  requestStream: false,
+  responseStream: false,
+  requestType: cryptomail_pb.Mail,
+  responseType: cryptomail_pb.Null
+};
+
+CryptoMail.GetMessages = {
+  methodName: "GetMessages",
+  service: CryptoMail,
+  requestStream: false,
+  responseStream: false,
+  requestType: cryptomail_pb.Time,
+  responseType: cryptomail_pb.MailArray
+};
+
 exports.CryptoMail = CryptoMail;
 
 function CryptoMailClient(serviceHost, options) {
@@ -471,6 +489,68 @@ CryptoMailClient.prototype.acceptFriendRequest = function acceptFriendRequest(re
     callback = arguments[1];
   }
   var client = grpc.unary(CryptoMail.AcceptFriendRequest, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+CryptoMailClient.prototype.sendMessage = function sendMessage(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(CryptoMail.SendMessage, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+CryptoMailClient.prototype.getMessages = function getMessages(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(CryptoMail.GetMessages, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

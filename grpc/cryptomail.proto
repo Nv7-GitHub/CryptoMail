@@ -23,6 +23,10 @@ service CryptoMail {
   rpc GetFriendRequests(Null) returns (FriendRequestArray) {}
   rpc GetFriends(Null) returns (StringArray) {}
   rpc AcceptFriendRequest(String) returns (Null) {}
+
+  // Messages
+  rpc SendMessage(Mail) returns (Null) {} // Only uses mail.To, mail.Subject, and mail.Body
+  rpc GetMessages(Time) returns (MailArray) {} // Get messages since unix timestamp
 }
 
 message Null {}
@@ -33,6 +37,10 @@ message Bool {
 
 message String {
   string value = 1;
+}
+
+message Time {
+  int64 value = 1;
 }
 
 message StringArray {

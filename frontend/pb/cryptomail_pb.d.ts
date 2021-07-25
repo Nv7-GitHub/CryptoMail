@@ -59,6 +59,26 @@ export namespace String {
   }
 }
 
+export class Time extends jspb.Message {
+  getValue(): number;
+  setValue(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): Time.AsObject;
+  static toObject(includeInstance: boolean, msg: Time): Time.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: Time, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Time;
+  static deserializeBinaryFromReader(message: Time, reader: jspb.BinaryReader): Time;
+}
+
+export namespace Time {
+  export type AsObject = {
+    value: number,
+  }
+}
+
 export class StringArray extends jspb.Message {
   clearValsList(): void;
   getValsList(): Array<string>;

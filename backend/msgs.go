@@ -16,7 +16,7 @@ import (
 
 const mailSendPrefix = "<cryptomail> <msg> "
 
-func SendMsg(email, msg string) error {
+func SendMsg(email, subject, msg string) error {
 	// Get Key
 	keyHex, err := storage.GetFriend(email)
 	if err != nil {
@@ -51,7 +51,7 @@ func SendMsg(email, msg string) error {
 	// Send
 	mail := &pb.Mail{
 		To:      email,
-		Subject: "<cryptomail> <facc>",
+		Subject: mailSendPrefix + subject,
 		Body:    hex.EncodeToString(ciphertext),
 	}
 	return gmail.SendMail(mail)

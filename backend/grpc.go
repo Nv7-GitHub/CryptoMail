@@ -90,3 +90,14 @@ func (s *server) GetCurrentProfile(ctx context.Context, req *pb.Null) (*pb.Strin
 func (s *server) AcceptFriendRequest(ctx context.Context, req *pb.String) (*pb.Null, error) {
 	return &pb.Null{}, AcceptFriendRequest(req.Value)
 }
+
+func (s *server) SendMessage(ctx context.Context, mail *pb.Mail) (*pb.Null, error) {
+	return &pb.Null{}, SendMsg(mail.To, mail.Subject, mail.Body)
+}
+
+func (s *server) GetMessages(ctx context.Context, t *pb.Time) (*pb.MailArray, error) {
+	res, err := storage.GetMessages(t.Value)
+	return &pb.MailArray{
+		Mails: res,
+	}, err
+}
