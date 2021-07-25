@@ -32,6 +32,7 @@ func LoadProfile(profile string) {
 	storage.Exec("CREATE TABLE IF NOT EXISTS config ( key TEXT, value TEXT )")
 	storage.Exec("CREATE TABLE IF NOT EXISTS freqs ( fromme INTEGER, email TEXT, key TEXT )")
 	storage.Exec("CREATE TABLE IF NOT EXISTS friends ( email TEXT, key TEXT )")
+	storage.Exec("CREATE TABLE IF NOT EXISTS mail ( id TEXT, sender TEXT, receiver TEXT, subject TEXT, body TEXT, date INTEGER )")
 
 	AddProfile(profile)
 

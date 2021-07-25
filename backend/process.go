@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"regexp"
 	"strings"
 
@@ -34,7 +33,10 @@ func ProcessMail(mail *pb.Mail) error {
 				return gmail.MarkRead(mail)
 
 			case "msg": // Message
-				fmt.Println("msg")
+				err := ProcessMsg(mail)
+				if err != nil {
+					return err
+				}
 				return gmail.MarkRead(mail)
 			}
 		}
