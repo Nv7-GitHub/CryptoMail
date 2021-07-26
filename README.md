@@ -34,3 +34,9 @@ Use
 make build
 ```
 To compile to an executable called `CryptoMail`, with everything bundled in (including the JS).
+
+Use 
+```sh
+make package
+```
+To package it according to your OS into a distributable bundle.
