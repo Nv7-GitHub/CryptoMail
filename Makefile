@@ -24,7 +24,7 @@ build:
 	cp -a frontend/dist/. backend/dist
 	
 	# Build Go
-	cd backend && go build -tags="prod" -o CryptoMail && cd ..
+	cd backend && go build -ldflags="-s -w" -tags="prod" -o CryptoMail && cd ..
 	cp backend/CryptoMail CryptoMail
 
 	# Cleanup
